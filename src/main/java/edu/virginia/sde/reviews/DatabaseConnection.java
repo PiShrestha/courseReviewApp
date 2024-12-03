@@ -104,7 +104,7 @@ public class DatabaseConnection {
                     FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE,
                     FOREIGN KEY (CourseID) REFERENCES Courses(CourseID) ON DELETE CASCADE,
                     CONSTRAINT UniqueReview UNIQUE (UserID, CourseID)
-                );
+                ) STRICT;
                 """)) {
             stmt.executeUpdate();
         }
