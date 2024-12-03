@@ -17,7 +17,7 @@ public class CourseDatabase {
                 VALUES (?, ?, ?);
              """)) {
             addCourseStatement.setString(1, course.getMnemonic());
-            addCourseStatement.setString(2, course.getNumber());
+            addCourseStatement.setInt(2, course.getNumber());
             addCourseStatement.setString(3, course.getTitle());
             addCourseStatement.executeUpdate();
         } catch (SQLException e) {
@@ -39,7 +39,7 @@ public class CourseDatabase {
                 return new Course(
                         resultSet.getInt("CourseID"),
                         resultSet.getString("SubjectMnemonic"),
-                        resultSet.getString("CourseNumber"),
+                        resultSet.getInt("CourseNumber"),
                         resultSet.getString("Title")
                 );
             }
@@ -67,7 +67,7 @@ public class CourseDatabase {
                 courses.add(new Course(
                         resultSet.getInt("CourseID"),
                         resultSet.getString("SubjectMnemonic"),
-                        resultSet.getString("CourseNumber"),
+                        resultSet.getInt("CourseNumber"),
                         resultSet.getString("Title")
                 ));
             }
@@ -88,7 +88,7 @@ public class CourseDatabase {
                 courses.add(new Course(
                         resultSet.getInt("CourseID"),
                         resultSet.getString("SubjectMnemonic"),
-                        resultSet.getString("CourseNumber"),
+                        resultSet.getInt("CourseNumber"),
                         resultSet.getString("Title")
                 ));
             }
