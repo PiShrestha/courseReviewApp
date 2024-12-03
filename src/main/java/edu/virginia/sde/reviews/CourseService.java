@@ -18,20 +18,20 @@ public class CourseService {
         }
     }
 
-    public void addCourse(String subject, String number, String title) {
+    public void addCourse(Course course) {
 
-        if (subject == null || subject.length() < 2 || subject.length() > 4 || !subject.matches("[a-zA-Z]+")) {
+        if (course.getMnemonic() == null || course.getMnemonic().length() < 2 || course.getMnemonic().length() > 4 || !course.getMnemonic().matches("[a-zA-Z]+")) {
             throw new IllegalArgumentException("Invalid subject: must be 2-4 letters.");
         }
-        if (number == null || !number.matches("\\d{4}")) {
+        if (course.getNumber() < 1000 || course.getNumber() > 9999) {
             throw new IllegalArgumentException("Invalid course number: must be a 4-digit number.");
         }
-        if (title == null || title.length() < 1 || title.length() > 50) {
+        if (course.getTitle() == null || course.getTitle() .length() < 1 || course.getTitle() .length() > 50) {
             throw new IllegalArgumentException("Invalid title: must be between 1 and 50 characters.");
         }
 
         try {
-            Course newCourse = new Course(subject.toUpperCase(), Integer.parseInt(number), title);
+            Course newCourse = new Course(course.getMnemonic().toUpperCase(),course.getNumber(), course.getTitle());
             courseDatabase.addCourse(newCourse);
         } catch (SQLException e) {
             throw new RuntimeException("Database error occurred", e);
