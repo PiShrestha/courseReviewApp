@@ -10,15 +10,15 @@ public class Course {
 
     public Course(int id, String mnemonic, int number, String title) {
         this.id = id;
-        this.mnemonic = mnemonic.toUpperCase();
+        this.mnemonic = mnemonic.toUpperCase().trim();
         this.number = number;
-        this.title = title;
+        this.title = title.trim();
     }
 
     public Course(String mnemonic, int number, String title) {
-        this.mnemonic = mnemonic.toUpperCase();
+        this.mnemonic = mnemonic.toUpperCase().trim();
         this.number = number;
-        this.title = title;
+        this.title = title.trim();
     }
 
     public Course() {
@@ -37,7 +37,7 @@ public class Course {
     }
 
     public void setMnemonic(String mnemonic) {
-        this.mnemonic = mnemonic.toUpperCase();
+        this.mnemonic = mnemonic.toUpperCase().trim();
     }
 
     public int getNumber() {
@@ -53,7 +53,7 @@ public class Course {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.title = title.trim();
     }
 
     @Override

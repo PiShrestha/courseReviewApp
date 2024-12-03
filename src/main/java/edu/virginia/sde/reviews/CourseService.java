@@ -26,7 +26,7 @@ public class CourseService {
         if (course.getNumber() < 1000 || course.getNumber() > 9999) {
             throw new IllegalArgumentException("Invalid course number: must be a 4-digit number.");
         }
-        if (course.getTitle() == null || course.getTitle() .length() < 1 || course.getTitle() .length() > 50) {
+        if (course.getTitle() == null || course.getTitle().length() < 1 || course.getTitle() .length() > 50) {
             throw new IllegalArgumentException("Invalid title: must be between 1 and 50 characters.");
         }
 
