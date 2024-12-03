@@ -20,6 +20,9 @@ public class CourseDatabase {
             addCourseStatement.setString(2, course.getNumber());
             addCourseStatement.setString(3, course.getTitle());
             addCourseStatement.executeUpdate();
+        } catch (SQLException e) {
+            DATABASE_CONNECTION.rollback();
+            throw e;
         }
     }
 
@@ -34,10 +37,10 @@ public class CourseDatabase {
 
             if (resultSet.next()) {
                 return new Course(
-                        resultSet.getInt("course_id"),
-                        resultSet.getString("subject_mnemonic"),
-                        resultSet.getString("course_number"),
-                        resultSet.getString("title")
+                        resultSet.getInt("CourseID"),
+                        resultSet.getString("SubjectMnemonic"),
+                        resultSet.getString("CourseNumber"),
+                        resultSet.getString("Title")
                 );
             }
             return null;
@@ -54,10 +57,10 @@ public class CourseDatabase {
                       CourseNumber LIKE ? OR
                       LOWER(Title) LIKE LOWER(?);
              """)) {
-            String wildcardSearch = "%" + searchTerm + "%";
-            searchCoursesStatement.setString(1, wildcardSearch);
-            searchCoursesStatement.setString(2, wildcardSearch);
-            searchCoursesStatement.setString(3, wildcardSearch);
+            String substringSearch = "%" + searchTerm + "%";
+            searchCoursesStatement.setString(1, substringSearch);
+            searchCoursesStatement.setString(2, substringSearch);
+            searchCoursesStatement.setString(3, substringSearch);
             ResultSet resultSet = searchCoursesStatement.executeQuery();
 
             while (resultSet.next()) {

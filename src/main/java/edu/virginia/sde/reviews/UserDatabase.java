@@ -17,6 +17,9 @@ public class UserDatabase {
             addUserStatement.setString(1, user.getUsername());
             addUserStatement.setString(2, user.getPassword());
             addUserStatement.executeUpdate();
+        } catch (SQLException e) {
+            DATABASE_CONNECTION.rollback();
+            throw e;
         }
     }
 
