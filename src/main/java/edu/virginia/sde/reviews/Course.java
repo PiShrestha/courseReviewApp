@@ -5,17 +5,17 @@ import java.util.Objects;
 public class Course {
     private int id;
     private String mnemonic;
-    private String number;
+    private int number;
     private String title;
 
-    public Course(int id, String mnemonic, String number, String title) {
+    public Course(int id, String mnemonic, int number, String title) {
         this.id = id;
         this.mnemonic = mnemonic.toUpperCase();
         this.number = number;
         this.title = title;
     }
 
-    public Course(String mnemonic, String number, String title) {
+    public Course(String mnemonic, int number, String title) {
         this.mnemonic = mnemonic.toUpperCase();
         this.number = number;
         this.title = title;
@@ -40,11 +40,11 @@ public class Course {
         this.mnemonic = mnemonic.toUpperCase();
     }
 
-    public String getNumber() {
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 
