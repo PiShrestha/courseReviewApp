@@ -2,11 +2,11 @@ package edu.virginia.sde.reviews;
 import java.sql.*;
 import java.util.Optional;
 
-public class AuthenticationService {
+public class UserService {
     private final UserDatabase userDatabase;
     private User currentUser;
 
-    public AuthenticationService(UserDatabase userDatabase) {
+    public UserService(UserDatabase userDatabase) {
         this.userDatabase = userDatabase;
     }
 
@@ -42,8 +42,8 @@ public class AuthenticationService {
                 }
             }
             return false;
-        } catch (Exception e) {
-            return false;
+        } catch (SQLException e) {
+            throw new RuntimeException("Database error occurred", e);
         }
     }
 
