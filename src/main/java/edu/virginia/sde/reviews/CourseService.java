@@ -10,14 +10,6 @@ public class CourseService {
         this.courseDatabase = courseDatabase;
     }
 
-    public List<Course> getAllCourses(){
-        try {
-            return courseDatabase.getAllCourses();
-        } catch (SQLException e) {
-            throw new RuntimeException("Database error occurred", e);
-        }
-    }
-
     public List<Course> searchCourses(String searchTerm){
         try {
             return courseDatabase.searchCourses(searchTerm);
@@ -41,6 +33,22 @@ public class CourseService {
         try {
             Course newCourse = new Course(subject.toUpperCase(), Integer.parseInt(number), title);
             courseDatabase.addCourse(newCourse);
+        } catch (SQLException e) {
+            throw new RuntimeException("Database error occurred", e);
+        }
+    }
+
+    public Optional<Course> getCourseById(int courseId) {
+        try {
+            return Optional.ofNullable(courseDatabase.getCourseById(courseId));
+        } catch (SQLException e) {
+            throw new RuntimeException("Database error occurred", e);
+        }
+    }
+
+    public List<Course> getAllCourses(){
+        try {
+            return courseDatabase.getAllCourses();
         } catch (SQLException e) {
             throw new RuntimeException("Database error occurred", e);
         }
