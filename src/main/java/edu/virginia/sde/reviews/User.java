@@ -7,12 +7,12 @@ public class User {
 
     public User(int id, String username, String password) {
         this.id = id;
-        this.username = username;
+        this.username = username.trim();
         this.password = password;
     }
 
     public User(String username, String password) {
-        this.username = username;
+        this.username = username.trim();
         this.password = password;
     }
 
@@ -32,7 +32,7 @@ public class User {
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.username = username.trim();
     }
 
     public String getPassword() {
