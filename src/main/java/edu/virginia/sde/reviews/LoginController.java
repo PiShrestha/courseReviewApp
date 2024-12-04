@@ -4,7 +4,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.util.Optional;
 
@@ -19,10 +21,29 @@ public class LoginController {
     @FXML
     private Label label;
 
+    @FXML
+    private Label titleLabel;
+
+    @FXML
+    private VBox loginBox;
+
+    @FXML
+    private VBox registrationBox;
+
+    @FXML
+    private TextField registerUsernameField;
+
+    @FXML
+    private PasswordField registerPasswordField;
+
+    @FXML
+    private Label toggleLabel;
+
     private UserService userService;
     private CourseService courseService;
     private ReviewService reviewService;
     private Stage primaryStage;
+    private boolean isLoginMode = true;
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -36,7 +57,9 @@ public class LoginController {
 
     @FXML
     public void initialize() {
-        label.setVisible(false);
+        if (label != null) {
+            label.setVisible(false);
+        }
     }
 
     @FXML
@@ -59,8 +82,8 @@ public class LoginController {
 
     @FXML
     public void handleRegisterButton() {
-        String username = usernameField.getText().trim();
-        String password = passwordField.getText();
+        String username = registerUsernameField.getText().trim();
+        String password = registerPasswordField.getText();
 
 //        if (username.isEmpty() || password.isEmpty()) {
 //            showLabel("Username and password cannot be empty.");
@@ -73,7 +96,32 @@ public class LoginController {
             displayLabel(registerResult.get());
         } else {
             displayLabel("Registration successful! Please log in.");
+            toggleForms();
         }
+    }
+
+    @FXML
+    public void toggleForms() {
+        if (isLoginMode) {
+            loginBox.setVisible(false);
+            loginBox.setManaged(false);
+
+            registrationBox.setVisible(true);
+            registrationBox.setManaged(true);
+
+            toggleLabel.setText("Already have an account? Log In");
+        } else {
+            loginBox.setVisible(true);
+            loginBox.setManaged(true);
+
+            registrationBox.setVisible(false);
+            registrationBox.setManaged(false);
+
+            toggleLabel.setText("Don't have an account? Sign Up");
+        }
+
+        isLoginMode = !isLoginMode;
+        label.setVisible(false);
     }
 
     private void displayLabel(String message) {

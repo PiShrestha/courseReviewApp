@@ -9,6 +9,35 @@
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="edu.virginia.sde.reviews.LoginController"
-            prefHeight="400.0" prefWidth="600.0" >
+            prefHeight="500.0" prefWidth="700.0" >
+    <children>
+        <VBox alignment="CENTER" spacing="20"
+              AnchorPane.topAnchor="0.0"
+              AnchorPane.bottomAnchor="0.0"
+              AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0">
+            <Label fx:id="titleLabel" style="-fx-font-size: 30px; -fx-text-fill: #333; " text="Login to Course Reviews" />
+            <Label fx:id="label" style="-fx-font-size: 12px; -fx-text-fill: red;" visible="false" />
 
+            <VBox fx:id="loginBox" alignment="CENTER" maxWidth="300" spacing="10">
+                <TextField fx:id="usernameField" prefHeight="40.0" prefWidth="300.0" promptText="Username"
+                           style="-fx-border-color: #ccc;" />
+                <PasswordField fx:id="passwordField" prefHeight="40.0" prefWidth="300.0" promptText="Password"
+                               style="-fx-border-color: #ccc;" />
+                <Button onAction="#handleLoginButton" prefHeight="40.0" prefWidth="100.0"
+                        style="-fx-background-color: #46c74c; -fx-text-fill: white;" text="Log In" />
+            </VBox>
+
+            <VBox fx:id="registrationBox" alignment="CENTER" maxWidth="300" spacing="10" visible="false" managed="false">
+                <TextField fx:id="registerUsernameField" prefHeight="40.0" prefWidth="300.0" promptText="Username"
+                           style="-fx-border-color: #ccc;" />
+                <PasswordField fx:id="registerPasswordField" prefHeight="40.0" prefWidth="300.0" promptText="Password"
+                               style="-fx-border-color: #ccc;" />
+                <Button onAction="#handleRegisterButton" prefHeight="40.0" prefWidth="100.0"
+                        style="-fx-background-color: #2196F3; -fx-text-fill: white;" text="Sign Up" />
+            </VBox>
+
+            <Label fx:id="toggleLabel" onMouseClicked="#toggleForms" style="-fx-font-size: 12px; -fx-text-fill: #2196F3; -fx-cursor: hand;" text="Don't have an account? Sign Up" />
+        </VBox>
+    </children>
 </AnchorPane>

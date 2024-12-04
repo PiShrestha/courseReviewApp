@@ -8,17 +8,21 @@ import javafx.stage.Stage;
 import java.sql.SQLException;
 
 public class CourseReviewsApplication extends Application {
+
+    private DatabaseConnection databaseConnection;
+
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        var databaseConnection = new DatabaseConnection("appDatabase.db");
+        databaseConnection = new DatabaseConnection("appDatabase.db");
         databaseConnection.connect();
 
         try {
             databaseConnection.createTables();
+            databaseConnection.commit();
         } catch (SQLException e) {
             throw new RuntimeException("Error while building the database", e);
         }
@@ -41,5 +45,11 @@ public class CourseReviewsApplication extends Application {
         primaryStage.setTitle("Course Reviews");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        databaseConnection.disconnect();
+        super.stop();
     }
 }
