@@ -37,7 +37,7 @@
                         style="-fx-background-color: #2196F3; -fx-text-fill: white;" text="Sign Up" />
             </VBox>
 
-            <Label fx:id="toggleLabel" onMouseClicked="#toggleForms" style="-fx-font-size: 12px; -fx-text-fill: #2196F3; -fx-cursor: hand;" text="Don't have an account? Sign Up" />
+            <Label fx:id="toggleLabel" onMouseClicked="#toggle" style="-fx-font-size: 12px; -fx-text-fill: #2196F3; -fx-cursor: hand;" text="Don't have an account? Sign Up" />
         </VBox>
     </children>
 </AnchorPane>

@@ -96,12 +96,12 @@ public class LoginController {
             displayLabel(registerResult.get());
         } else {
             displayLabel("Registration successful! Please log in.");
-            toggleForms();
+            toggle();
         }
     }
 
     @FXML
-    public void toggleForms() {
+    public void toggle() {
         if (isLoginMode) {
             loginBox.setVisible(false);
             loginBox.setManaged(false);
