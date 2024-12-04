@@ -24,11 +24,20 @@ public class CourseReviewsApplication extends Application {
             throw new RuntimeException("Error while building the database", e);
         }
 
+        var userDatabase = new UserDatabase(databaseConnection);
+        var courseDatabase = new CourseDatabase(databaseConnection);
+        var reviewDatabase = new ReviewDatabase(databaseConnection);
+
+        var userService = new UserService(userDatabase);
+        var courseService = new CourseService(courseDatabase);
+        var reviewService = new ReviewService(reviewDatabase);
+
         var fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
         var scene = new Scene(fxmlLoader.load());
 
         var controller = (LoginController) fxmlLoader.getController();
         controller.setPrimaryStage(primaryStage);
+        controller.setServices(userService, courseService, reviewService);
 
         primaryStage.setTitle("Course Reviews");
         primaryStage.setScene(scene);

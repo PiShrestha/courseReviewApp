@@ -10,7 +10,7 @@ public class UserService {
         this.userDatabase = userDatabase;
     }
 
-    public Optional<String> createUser(User user) {
+    public Optional<String> registerUser(User user) {
         if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
             return Optional.of("Username cannot be empty.");
         }
@@ -30,7 +30,7 @@ public class UserService {
         }
     }
 
-    public boolean authenticateUser(User user) {
+    public boolean loginUser(User user) {
         try {
             Optional<User> userFromDatabase = userDatabase.getUserByUsername(user.getUsername());
 
