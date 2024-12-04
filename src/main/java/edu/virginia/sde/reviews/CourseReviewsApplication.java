@@ -18,7 +18,6 @@ public class CourseReviewsApplication extends Application {
         databaseConnection.connect();
 
         try {
-            databaseConnection.connect();
             databaseConnection.createTables();
         } catch (SQLException e) {
             throw new RuntimeException("Error while building the database", e);
@@ -32,8 +31,8 @@ public class CourseReviewsApplication extends Application {
         var courseService = new CourseService(courseDatabase);
         var reviewService = new ReviewService(reviewDatabase);
 
-        var fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
-        var scene = new Scene(fxmlLoader.load());
+        var fxmlLoader = new FXMLLoader(getClass().getResource("/edu/virginia/sde/reviews/login.fxml"));
+        var scene = new Scene(fxmlLoader.load(), 1280, 720);
 
         var controller = (LoginController) fxmlLoader.getController();
         controller.setPrimaryStage(primaryStage);

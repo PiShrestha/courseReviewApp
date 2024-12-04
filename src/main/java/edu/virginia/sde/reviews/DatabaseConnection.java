@@ -72,7 +72,7 @@ public class DatabaseConnection {
                 UserID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 Username TEXT NOT NULL UNIQUE,
                 Password TEXT NOT NULL
-            ) STRICT;
+            )
             """)) {
             stmt.executeUpdate();
         }
@@ -84,9 +84,9 @@ public class DatabaseConnection {
                 CourseID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 SubjectMnemonic TEXT NOT NULL,
                 CourseNumber INTEGER NOT NULL,
-                Title TEXT NOT NULL
+                Title TEXT NOT NULL,
                 CONSTRAINT UniqueCourse UNIQUE (SubjectMnemonic, CourseNumber, Title)
-            ) STRICT;
+            )
             """)) {
             stmt.executeUpdate();
         }
@@ -104,7 +104,7 @@ public class DatabaseConnection {
                     FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE,
                     FOREIGN KEY (CourseID) REFERENCES Courses(CourseID) ON DELETE CASCADE,
                     CONSTRAINT UniqueReview UNIQUE (UserID, CourseID)
-                ) STRICT;
+                )
                 """)) {
             stmt.executeUpdate();
         }
