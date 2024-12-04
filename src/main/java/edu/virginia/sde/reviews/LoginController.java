@@ -131,7 +131,7 @@ public class LoginController {
 
     private void switchToCourseSearch() {
         try {
-            var fxmlLoader = new FXMLLoader(getClass().getResource("/edu/virginia/sde/reviews/course-search.fxml"));
+            var fxmlLoader = new FXMLLoader(getClass().getResource("/edu/virginia/sde/reviews/CourseSearch.fxml"));
             var newScene = new Scene(fxmlLoader.load());
             var controller = (CourseSearchController) fxmlLoader.getController();
             controller.setPrimaryStage(primaryStage);
