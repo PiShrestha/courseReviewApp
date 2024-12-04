@@ -11,15 +11,17 @@ public class CourseDatabase {
     }
 
     public void addCourse(Course course) throws SQLException {
-        try (Connection connection = DATABASE_CONNECTION.getConnection();
-             PreparedStatement addCourseStatement = connection.prepareStatement("""
-                INSERT INTO Courses (SubjectMnemonic, CourseNumber, Title)
-                VALUES (?, ?, ?);
-             """)) {
-            addCourseStatement.setString(1, course.getMnemonic());
-            addCourseStatement.setInt(2, course.getNumber());
-            addCourseStatement.setString(3, course.getTitle());
-            addCourseStatement.executeUpdate();
+        try {
+            Connection connection = DATABASE_CONNECTION.getConnection();
+            try (PreparedStatement addCourseStatement = connection.prepareStatement("""
+                    INSERT INTO Courses (SubjectMnemonic, CourseNumber, Title)
+                    VALUES (?, ?, ?);
+                 """)) {
+                addCourseStatement.setString(1, course.getMnemonic());
+                addCourseStatement.setInt(2, course.getNumber());
+                addCourseStatement.setString(3, course.getTitle());
+                addCourseStatement.executeUpdate();
+            }
         } catch (SQLException e) {
             DATABASE_CONNECTION.rollback();
             throw e;
@@ -27,71 +29,83 @@ public class CourseDatabase {
     }
 
     public Course getCourseById(int courseId) throws SQLException {
-        try (Connection connection = DATABASE_CONNECTION.getConnection();
-             PreparedStatement getCourseStatement = connection.prepareStatement("""
-                SELECT CourseID, SubjectMnemonic, CourseNumber, Title
-                FROM Courses WHERE CourseID = ?;
-             """)) {
-            getCourseStatement.setInt(1, courseId);
-            ResultSet resultSet = getCourseStatement.executeQuery();
+        try {
+            Connection connection = DATABASE_CONNECTION.getConnection();
+            try (PreparedStatement getCourseStatement = connection.prepareStatement("""
+                    SELECT CourseID, SubjectMnemonic, CourseNumber, Title
+                    FROM Courses WHERE CourseID = ?;
+                 """)) {
+                getCourseStatement.setInt(1, courseId);
+                ResultSet resultSet = getCourseStatement.executeQuery();
 
-            if (resultSet.next()) {
-                return new Course(
-                        resultSet.getInt("CourseID"),
-                        resultSet.getString("SubjectMnemonic"),
-                        resultSet.getInt("CourseNumber"),
-                        resultSet.getString("Title")
-                );
+                if (resultSet.next()) {
+                    return new Course(
+                            resultSet.getInt("CourseID"),
+                            resultSet.getString("SubjectMnemonic"),
+                            resultSet.getInt("CourseNumber"),
+                            resultSet.getString("Title")
+                    );
+                }
             }
             return null;
+        } catch (SQLException e) {
+            throw e;
         }
     }
 
     public List<Course> searchCourses(String searchTerm) throws SQLException {
         List<Course> courses = new ArrayList<>();
-        try (Connection connection = DATABASE_CONNECTION.getConnection();
-             PreparedStatement searchCoursesStatement = connection.prepareStatement("""
-                SELECT CourseID, SubjectMnemonic, CourseNumber, Title
-                FROM Courses
-                WHERE LOWER(SubjectMnemonic) LIKE LOWER(?) OR
-                      CourseNumber LIKE ? OR
-                      LOWER(Title) LIKE LOWER(?);
-             """)) {
-            String substringSearch = "%" + searchTerm + "%";
-            searchCoursesStatement.setString(1, substringSearch);
-            searchCoursesStatement.setString(2, substringSearch);
-            searchCoursesStatement.setString(3, substringSearch);
-            ResultSet resultSet = searchCoursesStatement.executeQuery();
+        try {
+            Connection connection = DATABASE_CONNECTION.getConnection();
+            try (PreparedStatement searchCoursesStatement = connection.prepareStatement("""
+                    SELECT CourseID, SubjectMnemonic, CourseNumber, Title
+                    FROM Courses
+                    WHERE LOWER(SubjectMnemonic) LIKE LOWER(?) OR
+                          CourseNumber LIKE ? OR
+                          LOWER(Title) LIKE LOWER(?);
+                 """)) {
+                String substringSearch = "%" + searchTerm + "%";
+                searchCoursesStatement.setString(1, substringSearch);
+                searchCoursesStatement.setString(2, substringSearch);
+                searchCoursesStatement.setString(3, substringSearch);
+                ResultSet resultSet = searchCoursesStatement.executeQuery();
 
-            while (resultSet.next()) {
-                courses.add(new Course(
-                        resultSet.getInt("CourseID"),
-                        resultSet.getString("SubjectMnemonic"),
-                        resultSet.getInt("CourseNumber"),
-                        resultSet.getString("Title")
-                ));
+                while (resultSet.next()) {
+                    courses.add(new Course(
+                            resultSet.getInt("CourseID"),
+                            resultSet.getString("SubjectMnemonic"),
+                            resultSet.getInt("CourseNumber"),
+                            resultSet.getString("Title")
+                    ));
+                }
             }
+        } catch (SQLException e) {
+            throw e;
         }
         return courses;
     }
 
     public List<Course> getAllCourses() throws SQLException {
         List<Course> courses = new ArrayList<>();
-        try (Connection connection = DATABASE_CONNECTION.getConnection();
-             PreparedStatement getAllCoursesStatement = connection.prepareStatement("""
-                SELECT CourseID, SubjectMnemonic, CourseNumber, Title
-                FROM Courses;
-             """)) {
-            ResultSet resultSet = getAllCoursesStatement.executeQuery();
+        try {
+            Connection connection = DATABASE_CONNECTION.getConnection();
+            try (PreparedStatement getAllCoursesStatement = connection.prepareStatement("""
+                    SELECT CourseID, SubjectMnemonic, CourseNumber, Title
+                    FROM Courses;
+                 """)) {
+                ResultSet resultSet = getAllCoursesStatement.executeQuery();
 
-            while (resultSet.next()) {
-                courses.add(new Course(
-                        resultSet.getInt("CourseID"),
-                        resultSet.getString("SubjectMnemonic"),
-                        resultSet.getInt("CourseNumber"),
-                        resultSet.getString("Title")
-                ));
+                while (resultSet.next()) {
+                    courses.add(new Course(
+                            resultSet.getInt("CourseID"),
+                            resultSet.getString("SubjectMnemonic"),
+                            resultSet.getInt("CourseNumber"),
+                            resultSet.getString("Title")
+                    ));
+                }
             }
+        } catch (SQLException e) {
+            throw e;
         }
         return courses;
     }
