@@ -107,7 +107,7 @@ public class CourseSearchController {
     @FXML
     private void navigateToMyReviews() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/virginia/sde/reviews/my-reviews.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/virginia/sde/reviews/MyReviews.fxml"));
             Scene myReviewsScene = new Scene(loader.load());
 
             MyReviewsController controller = loader.getController();
