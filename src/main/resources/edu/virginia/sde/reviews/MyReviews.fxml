@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.Button?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.virginia.sde.reviews.MyReviewsController" spacing="10" alignment="TOP_CENTER">
-    <TableView fx:id="reviewsTable" prefHeight="400" prefWidth="600">
-        <columns>
-            <TableColumn fx:id="courseColumn" text="Course" />
-            <TableColumn fx:id="ratingColumn" text="Rating" />
-            <TableColumn fx:id="commentColumn" text="Comment" />
-            <TableColumn fx:id="timestampColumn" text="Timestamp" />
-            <TableColumn fx:id="deleteColumn" text="Action"/>
-        </columns>
-    </TableView>
-    <Button text="Back" onAction="#navigateToCourseSearch" />
-</VBox>
 
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.MyReviewsController">
+    <children>
+        <VBox alignment="TOP_CENTER" spacing="10" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="My Reviews" />
+            <TableView fx:id="reviewsTable" prefHeight="400" prefWidth="600">
+                <columns>
+                    <TableColumn fx:id="courseColumn" text="Course" />
+                    <TableColumn fx:id="ratingColumn" text="Rating" />
+                    <TableColumn fx:id="commentColumn" text="Comment" />
+                    <TableColumn fx:id="timestampColumn" text="Timestamp" />
+                    <TableColumn fx:id="deleteColumn" text="Action" />
+                </columns>
+            <columnResizePolicy>
+               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+            </TableView>
+            <Button onAction="#navigateToCourseSearch" text="Back" />
+        </VBox>
+    </children>
+</AnchorPane>
