@@ -13,7 +13,7 @@
                 <Label text="Course Reviews" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
                 <HBox alignment="CENTER">
                     <Label text="Course Name:" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
-                    <TextField fx:id="courseNameLabel" editable="false" prefWidth="50"
+                    <TextField fx:id="courseNameField" editable="false" prefWidth="300"
                                style="-fx-background-color: #f0f0f0; -fx-font-size: 14px;" />
                 </HBox>
                 <HBox alignment="CENTER">
