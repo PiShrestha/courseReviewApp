@@ -173,8 +173,8 @@ public class CourseSearchController {
             Scene courseReviewsScene = new Scene(loader.load());
 
             CourseReviewsController controller = loader.getController();
-            controller.setServices(userService, courseService, reviewService);
             controller.setCourseId(selectedCourse.getId());
+            controller.setServices(userService, courseService, reviewService);
             controller.setPrimaryStage(primaryStage);
 
             primaryStage.setScene(courseReviewsScene);

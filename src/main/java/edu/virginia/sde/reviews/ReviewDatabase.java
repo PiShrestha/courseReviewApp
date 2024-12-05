@@ -99,7 +99,7 @@ public class ReviewDatabase {
                 int rating = resultSet.getInt("Rating");
                 String comment = resultSet.getString("Comment");
                 Timestamp timestamp = resultSet.getTimestamp("Timestamp");
-                return Optional.of(new Review(id, userId, courseId, rating, comment, timestamp));
+                return Optional.of(new Review(id, courseId, userId, rating, comment, timestamp));
             } else {
                 return Optional.empty();
             }
@@ -121,7 +121,7 @@ public class ReviewDatabase {
                 int rating = resultSet.getInt("Rating");
                 String comment = resultSet.getString("Comment");
                 Timestamp timestamp = resultSet.getTimestamp("Timestamp");
-                reviews.add(new Review(id, userId, courseId, rating, comment, timestamp));
+                reviews.add(new Review(id, courseId, userId, rating, comment, timestamp));
             }
             return reviews;
         }
