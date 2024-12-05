@@ -3,7 +3,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.Button?>
-<VBox xmlns:fx="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.virginia.sde.reviews.MyReviewsController" spacing="10" alignment="TOP_CENTER">
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.virginia.sde.reviews.MyReviewsController" spacing="10" alignment="TOP_CENTER">
     <TableView fx:id="reviewsTable" prefHeight="400" prefWidth="600">
         <columns>
             <TableColumn fx:id="courseColumn" text="Course" />
