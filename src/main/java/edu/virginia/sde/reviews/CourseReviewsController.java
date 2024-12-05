@@ -36,6 +36,9 @@ public class CourseReviewsController {
     @FXML
     private TextField ratingField;
 
+    @FXML
+    private TableColumn<Review, Void> actionColumn;
+
     private UserService userService;
     private CourseService courseService;
     private ReviewService reviewService;
@@ -64,6 +67,7 @@ public class CourseReviewsController {
         timestampColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getTimestamp()));
 
         messageLabel.setText("");
+        addActionButtonToTable();
     }
 
     @FXML
@@ -73,6 +77,46 @@ public class CourseReviewsController {
             reviewsTable.setItems(FXCollections.observableList(reviews));
         } catch (Exception e) {
             showError("Failed to load reviews. Please try again.");
+        }
+    }
+
+    private void addActionButtonToTable() {
+        actionColumn.setCellFactory(col -> new TableCell<>() {
+            private final Button editButton = new Button("Edit");
+
+            {
+                editButton.setOnAction(event -> {
+                    Review review = getTableView().getItems().get(getIndex());
+                    handleEditReview(review);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    setGraphic(null);
+                    return;
+                }
+
+                Review review = getTableView().getItems().get(getIndex());
+
+                if (review.getUserId() == userService.getCurrentUser().getId()) {
+                    setGraphic(editButton);
+                } else {
+                    setGraphic(null);
+                }
+            }
+        });
+    }
+
+    private void handleEditReview(Review review) {
+        if (review.getUserId() == userService.getCurrentUser().getId()) {
+            ratingField.setText(String.valueOf(review.getRating()));
+            commentTextArea.setText(review.getComment());
+        } else {
+            showError("You can only edit your own review.");
         }
     }
 
@@ -105,6 +149,47 @@ public class CourseReviewsController {
             showError("Rating must be a valid number.");
         } catch (Exception e) {
             showError("An error occurred while adding the review.");
+        }
+    }
+
+    @FXML
+    private void handleUpdateReview() {
+        String comment = commentTextArea.getText().trim();
+        String ratingInput = ratingField.getText().trim();
+
+        if (comment.isEmpty() || ratingInput.isEmpty()) {
+            showError("Both rating and comment are required.");
+            return;
+        }
+
+        try {
+            int rating = Integer.parseInt(ratingInput);
+
+            Optional<Review> userReview = reviewService.getReviewsByUser(courseId).stream()
+                    .filter(review -> review.getUserId() == userService.getCurrentUser().getId())
+                    .findFirst();
+
+            if (userReview.isPresent()) {
+                Review updatedReview = userReview.get();
+                updatedReview.setRating(rating);
+                updatedReview.setComment(comment);
+                updatedReview.setTimestamp(new Timestamp(System.currentTimeMillis()));
+
+                Optional<String> result = reviewService.updateReview(updatedReview);
+
+                if (result.isPresent()) {
+                    showError(result.get());
+                } else {
+                    showSuccess("Review updated successfully!");
+                    loadReviews();
+                }
+            } else {
+                showError("No review found to update.");
+            }
+        } catch (NumberFormatException e) {
+            showError("Rating must be a valid number.");
+        } catch (Exception e) {
+            showError("An error occurred while updating the review.");
         }
     }
 
