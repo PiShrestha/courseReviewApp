@@ -29,6 +29,9 @@ public class MyReviewsController {
     @FXML
     private TableColumn<Review, String> timestampColumn;
 
+    @FXML
+    private TableColumn<Review, Void> deleteColumn;
+
     private CourseService courseService;
     private ReviewService reviewService;
     private UserService userService;
@@ -55,6 +58,25 @@ public class MyReviewsController {
         ratingColumn.setCellValueFactory(data -> new ReadOnlyObjectWrapper<>(data.getValue().getRating()));
         commentColumn.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getComment()));
         timestampColumn.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getTimestamp().toString()));
+        deleteColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button deleteButton = new Button("Delete");
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    setGraphic(null);
+                    return;
+                }
+
+                deleteButton.setOnAction(event -> {
+                    Review review = getTableView().getItems().get(getIndex());
+                    handleDeleteReview(review);
+                });
+                setGraphic(deleteButton);
+            }
+        });
     }
 
 
@@ -62,6 +84,25 @@ public class MyReviewsController {
         User currentUser = userService.getCurrentUser();
         List<Review> reviews = reviewService.getReviewsByUser(currentUser.getId());
         reviewsTable.setItems(FXCollections.observableList(reviews));
+    }
+
+    private void handleDeleteReview(Review review) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Delete");
+        alert.setHeaderText("Are you sure you want to delete this review?");
+        alert.setContentText("This action cannot be undone.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            Optional<String> deleteResult = reviewService.deleteReview(review.getId());
+            if (deleteResult.isPresent()) {
+                showError("Error: " + deleteResult.get());
+            } else {
+                // Remove review from TableView
+                reviewsTable.getItems().remove(review);
+                showInfo("Review deleted successfully.");
+            }
+        }
     }
 
     @FXML
@@ -88,6 +129,14 @@ public class MyReviewsController {
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showInfo(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
