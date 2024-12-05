@@ -10,6 +10,7 @@
             <TableColumn fx:id="ratingColumn" text="Rating" />
             <TableColumn fx:id="commentColumn" text="Comment" />
             <TableColumn fx:id="timestampColumn" text="Timestamp" />
+            <TableColumn fx:id="deleteColumn" text="Action"/>
         </columns>
     </TableView>
     <Button text="Back" onAction="#navigateToCourseSearch" />
