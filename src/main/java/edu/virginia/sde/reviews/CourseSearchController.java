@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -58,6 +59,28 @@ public class CourseSearchController {
             double averageRating = reviewService.getAverageRatingForCourse(course.getId());
             return new SimpleStringProperty(averageRating == 0.0 ? "No Reviews" : String.format("%.2f", averageRating));
         });
+
+        setupRowFactory();
+    }
+
+    private void setupRowFactory() {
+        coursesTable.setRowFactory(tv -> {
+            TableRow<Course> row = createRowWithClickListener();
+            return row;
+        });
+    }
+
+    private TableRow<Course> createRowWithClickListener() {
+        TableRow<Course> row = new TableRow<>();
+        row.setOnMouseClicked(event -> handleRowClick(event, row));
+        return row;
+    }
+
+    private void handleRowClick(MouseEvent event, TableRow<Course> row) {
+        if (event.getClickCount() == 2 && (!row.isEmpty())) {
+            Course selectedCourse = row.getItem();
+            navigateToCourseReviews(selectedCourse);
+        }
     }
 
     private void loadCourses() {
@@ -135,6 +158,28 @@ public class CourseSearchController {
             primaryStage.setScene(loginScene);
         } catch (IOException e) {
             showError("Failed to load Login screen.");
+        }
+    }
+
+    @FXML
+    private void navigateToCourseReviews(Course selectedCourse) {
+        if (selectedCourse == null) {
+            showError("Please select a course to view reviews.");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/virginia/sde/reviews/CourseReviews.fxml"));
+            Scene courseReviewsScene = new Scene(loader.load());
+
+            CourseReviewsController controller = loader.getController();
+            controller.setServices(userService, courseService, reviewService);
+            controller.setCourseId(selectedCourse.getId());
+            controller.setPrimaryStage(primaryStage);
+
+            primaryStage.setScene(courseReviewsScene);
+        } catch (IOException e) {
+            showError("Failed to load the Course Reviews screen.");
         }
     }
 

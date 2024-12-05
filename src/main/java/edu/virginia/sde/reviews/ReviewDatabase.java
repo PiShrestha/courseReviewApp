@@ -12,7 +12,8 @@ public class ReviewDatabase {
     }
 
     public void addReview(Review review) throws SQLException {
-        try (PreparedStatement stmt = databaseConnection.getConnection().prepareStatement("""
+        Connection connection = databaseConnection.getConnection();
+        try (PreparedStatement stmt = connection.prepareStatement("""
                 INSERT INTO Reviews (UserID, CourseID, Rating, Comment, Timestamp)
                     VALUES(?, ?, ?, ?, ?);
                 """)) {
@@ -22,14 +23,16 @@ public class ReviewDatabase {
             stmt.setString(4, review.getComment());
             stmt.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
             stmt.executeUpdate();
+            databaseConnection.commit();
         } catch (SQLException e) {
-            databaseConnection.rollback();
+            connection.rollback();
             throw e;
         }
     }
 
     public void updateReview(Review review) throws SQLException {
-        try (PreparedStatement stmt = databaseConnection.getConnection().prepareStatement("""
+        Connection connection = databaseConnection.getConnection();
+        try (PreparedStatement stmt = connection.prepareStatement("""
                 UPDATE Reviews
                 SET Rating = ?, Comment = ?, Timestamp = ?
                 WHERE ReviewID = ?;
@@ -39,26 +42,30 @@ public class ReviewDatabase {
             stmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
             stmt.setInt(4, review.getId());
             stmt.executeUpdate();
+            databaseConnection.commit();
         } catch (SQLException e) {
-            databaseConnection.rollback();
+            connection.rollback();
             throw e;
         }
     }
 
     public void deleteReview(int reviewId) throws SQLException {
-        try (PreparedStatement stmt = databaseConnection.getConnection().prepareStatement("""
+        Connection connection = databaseConnection.getConnection();
+        try (PreparedStatement stmt = connection.prepareStatement("""
                 DELETE FROM Reviews WHERE ReviewID = ?;
                 """)) {
             stmt.setInt(1, reviewId);
             stmt.executeUpdate();
+            databaseConnection.commit();
         } catch (SQLException e) {
-            databaseConnection.rollback();
+            connection.rollback();
             throw e;
         }
     }
 
     public List<Review> getReviewsByCourseId(int courseId) throws SQLException {
-        try (PreparedStatement stmt = databaseConnection.getConnection().prepareStatement("""
+        Connection connection = databaseConnection.getConnection();
+        try (PreparedStatement stmt = connection.prepareStatement("""
                 SELECT * FROM Reviews WHERE CourseID = ?;
                 """)) {
             stmt.setInt(1, courseId);
@@ -67,7 +74,6 @@ public class ReviewDatabase {
             List<Review> reviews = new ArrayList<>();
             while (resultSet.next()) {
                 int id = resultSet.getInt("ReviewID");
-                // int courseId = resultSet.getInt("CourseID");
                 int userId = resultSet.getInt("UserID");
                 int rating = resultSet.getInt("Rating");
                 String comment = resultSet.getString("Comment");
@@ -79,7 +85,8 @@ public class ReviewDatabase {
     }
 
     public Optional<Review> getReviewById(int reviewId) throws SQLException {
-        try (PreparedStatement stmt = databaseConnection.getConnection().prepareStatement("""
+        Connection connection = databaseConnection.getConnection();
+        try (PreparedStatement stmt = connection.prepareStatement("""
                 SELECT * FROM Reviews WHERE ReviewID = ?;
                 """)) {
             stmt.setInt(1, reviewId);
@@ -100,7 +107,8 @@ public class ReviewDatabase {
     }
 
     public List<Review> getReviewsByUserId(int userId) throws SQLException {
-        try (PreparedStatement stmt = databaseConnection.getConnection().prepareStatement("""
+        Connection connection = databaseConnection.getConnection();
+        try (PreparedStatement stmt = connection.prepareStatement("""
                 SELECT * FROM Reviews WHERE UserID = ?;
                 """)) {
             stmt.setInt(1, userId);
@@ -118,5 +126,4 @@ public class ReviewDatabase {
             return reviews;
         }
     }
-
 }

@@ -21,6 +21,7 @@ public class CourseDatabase {
                 addCourseStatement.setInt(2, course.getNumber());
                 addCourseStatement.setString(3, course.getTitle());
                 addCourseStatement.executeUpdate();
+                DATABASE_CONNECTION.commit();
             }
         } catch (SQLException e) {
             DATABASE_CONNECTION.rollback();
