@@ -2,7 +2,7 @@
 # Homework 6 - Responding to Change
 
 ## Authors
-1) Name, netid, [GitHub profile name]
+1) Pratik Shrestha, jpj8rf, [PiShrestha]
 2) Name, netid, [GitHub profile name]
 3) Name, netid, [GitHub profile name]
 
@@ -14,12 +14,14 @@
 
 List the primary contributions of each author. It is recommended to update this with your contributions after each coding session.:
 
-### [Author 1 - replace this with their name]
+### Pratik Shrestha
 
-* Author 1 contributions
-* as a bulleted list
-* each line starts with an asterisk and a space
-
+* Created Review, User, and Course models.
+* Built UserDatabase and CourseDatabase to manage database operations like adding, updating and retrieving data. 
+* Developed UserService and CourseService to handle app logic and connect controllers to the database.
+* Made LoginController for user login and registration, with a matching login screen.
+* Built CourseReviewsController for adding, updating, and viewing reviews, with a user-friendly interface.
+* 
 ### [Author 2 - replace this with their name]
 
 * Author 2 contributions
