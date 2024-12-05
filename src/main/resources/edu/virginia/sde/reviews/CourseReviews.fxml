@@ -13,7 +13,7 @@
                 <Label text="Course Reviews" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
                 <HBox alignment="CENTER">
                     <Label text="Average Rating:" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
-                    <TextField fx:id="averageRatingField" editable="false" prefWidth="100"
+                    <TextField fx:id="averageRatingField" editable="false" prefWidth="50"
                                style="-fx-background-color: #f0f0f0; -fx-font-size: 14px;" />
                 </HBox>
                 <Label fx:id="messageLabel" style="-fx-font-size: 14px; -fx-text-fill: red;" />
