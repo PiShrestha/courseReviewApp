@@ -125,8 +125,8 @@ public class CourseReviewsController {
         String comment = commentTextArea.getText().trim();
         String ratingInput = ratingField.getText().trim();
 
-        if (comment.isEmpty() || ratingInput.isEmpty()) {
-            showError("Both rating and comment are required.");
+        if (ratingInput.isEmpty()) {
+            showError("A rating is required.");
             return;
         }
 
