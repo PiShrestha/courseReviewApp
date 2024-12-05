@@ -1,22 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TableColumn?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.virginia.sde.reviews.CourseSearchController" spacing="10" alignment="TOP_CENTER">
-    <TextField fx:id="searchField" promptText="Search by subject, number, or title" />
-    <Button text="Search" onAction="#handleSearch" />
-    <TableView fx:id="coursesTable" prefHeight="400" prefWidth="600">
-        <columns>
-            <TableColumn fx:id="mnemonicColumn" text="Mnemonic" />
-            <TableColumn fx:id="numberColumn" text="Number" />
-            <TableColumn fx:id="titleColumn" text="Title" />
-            <TableColumn fx:id="ratingColumn" text="Average Rating" />
-        </columns>
-    </TableView>
-    <Button text="Add Course" onAction="#handleAddCourse" />
-    <Button text="My Reviews" onAction="#navigateToMyReviews" />
-    <Button text="Logout" onAction="#logout" />
-</VBox>
 
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="edu.virginia.sde.reviews.CourseSearchController"
+            prefHeight="600.0" prefWidth="800.0">
+    <children>
+        <VBox spacing="10" alignment="TOP_CENTER" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="10.0"
+              AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0">
+
+            <Label text="Course Search" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+
+            <HBox spacing="10" alignment="CENTER">
+                <TextField fx:id="searchField" promptText="Search by subject, number, or title" prefWidth="400" />
+                <Button text="Search" onAction="#handleSearch" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" />
+            </HBox>
+
+            <TableView fx:id="coursesTable" prefHeight="400" prefWidth="650" style="-fx-border-radius: 5;">
+                <columns>
+                    <TableColumn fx:id="mnemonicColumn" text="Mnemonic" prefWidth="100" />
+                    <TableColumn fx:id="numberColumn" text="Number" prefWidth="100" />
+                    <TableColumn fx:id="titleColumn" text="Title" prefWidth="300" />
+                    <TableColumn fx:id="ratingColumn" text="Average Rating" prefWidth="150" />
+                </columns>
+            </TableView>
+
+            <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
+                <Button text="Add Course" onAction="#handleAddCourse"
+                        style="-fx-background-color: #459de3; -fx-text-fill: white;" />
+                <Button text="My Reviews" onAction="#navigateToMyReviews"
+                        style="-fx-background-color: #efbd60; -fx-text-fill: white;" />
+                <Button text="Logout" onAction="#logout"
+                        style="-fx-background-color: #f44336; -fx-text-fill: white;" />
+            </HBox>
+
+        </VBox>
+    </children>
+</AnchorPane>

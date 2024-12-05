@@ -110,4 +110,22 @@ public class CourseDatabase {
         }
         return courses;
     }
+
+    public boolean courseExists(Course course) throws SQLException {
+        Connection connection = DATABASE_CONNECTION.getConnection();
+        try (PreparedStatement stmt = connection.prepareStatement("""
+                SELECT COUNT(*) FROM Courses
+                WHERE LOWER(SubjectMnemonic) = LOWER(?) AND CourseNumber = ? AND LOWER(Title) = LOWER(?);
+            """)){
+            stmt.setString(1, course.getMnemonic());
+            stmt.setInt(2, course.getNumber());
+            stmt.setString(3, course.getTitle());
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1) > 0;
+            }
+        }
+        return false;
+    }
 }
