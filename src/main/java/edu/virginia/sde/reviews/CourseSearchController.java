@@ -115,8 +115,11 @@ public class CourseSearchController {
                 String mnemonic = parts[0].trim();
                 int number = Integer.parseInt(parts[1].trim());
                 String title = parts[2].trim();
-
                 Course newCourse = new Course(mnemonic, number, title);
+                if (courseService.courseExists(newCourse)) {
+                    showError("Invalid Course: Course already exists.");
+                    return;
+                }
                 courseService.addCourse(newCourse);
                 loadCourses(); // Refresh the table
             } catch (NumberFormatException e) {

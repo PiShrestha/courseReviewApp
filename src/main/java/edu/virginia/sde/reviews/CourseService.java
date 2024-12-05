@@ -54,5 +54,13 @@ public class CourseService {
         }
     }
 
+    public boolean courseExists(Course course) {
+        try {
+            return courseDatabase.courseExists(course);
+        } catch (SQLException e) {
+            throw new RuntimeException("Database error occurred", e);
+        }
+    }
+
 
 }
