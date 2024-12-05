@@ -57,7 +57,7 @@ public class CourseSearchController {
         ratingColumn.setCellValueFactory(data -> {
             Course course = data.getValue();
             double averageRating = reviewService.getAverageRatingForCourse(course.getId());
-            return new SimpleStringProperty(averageRating == 0.0 ? "No Reviews" : String.format("%.2f", averageRating));
+            return new SimpleStringProperty(averageRating == 0.0 ? "N/A" : String.format("%.2f", averageRating));
         });
 
         setupRowFactory();

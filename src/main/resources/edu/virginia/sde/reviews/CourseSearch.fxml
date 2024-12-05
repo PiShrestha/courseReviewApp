@@ -12,7 +12,7 @@
             <TableColumn fx:id="mnemonicColumn" text="Mnemonic" />
             <TableColumn fx:id="numberColumn" text="Number" />
             <TableColumn fx:id="titleColumn" text="Title" />
-            <TableColumn fx:id="ratingColumn" text="Rating" />
+            <TableColumn fx:id="ratingColumn" text="Average Rating" />
         </columns>
     </TableView>
     <Button text="Add Course" onAction="#handleAddCourse" />
