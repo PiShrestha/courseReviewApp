@@ -42,6 +42,9 @@ public class CourseReviewsController {
     @FXML
     private TextField averageRatingField;
 
+    @FXML
+    private TextField courseNameField;
+
     private UserService userService;
     private CourseService courseService;
     private ReviewService reviewService;
@@ -78,8 +81,17 @@ public class CourseReviewsController {
         try {
             List<Review> reviews = reviewService.getReviewsForCourse(courseId);
             reviewsTable.setItems(FXCollections.observableList(reviews));
-            double averageRating = reviewService.getAverageRatingForCourse(courseId);
-            averageRatingField.setText(String.format("%.2f", averageRating));
+
+            Optional<Course> course = courseService.getCourseById(courseId);
+            if (course.isPresent()) {
+                courseNameField.setText(course.get().getTitle());
+                double averageRating = reviewService.getAverageRatingForCourse(courseId);
+                averageRatingField.setText(String.format("%.2f", averageRating));
+            }
+            else {
+                courseNameField.setText("Course not found");
+                averageRatingField.setText("N/A");
+            }
         } catch (Exception e) {
             showError("Failed to load reviews. Please try again.");
         }
