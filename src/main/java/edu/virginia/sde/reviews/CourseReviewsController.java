@@ -165,7 +165,7 @@ public class CourseReviewsController {
         try {
             int rating = Integer.parseInt(ratingInput);
 
-            Optional<Review> userReview = reviewService.getReviewsByUser(courseId).stream()
+            Optional<Review> userReview = reviewService.getReviewsForCourse(courseId).stream()
                     .filter(review -> review.getUserId() == userService.getCurrentUser().getId())
                     .findFirst();
 
