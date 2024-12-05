@@ -43,6 +43,8 @@ public class CourseReviewsApplication extends Application {
         controller.setServices(userService, courseService, reviewService);
 
         primaryStage.setTitle("Course Reviews");
+        primaryStage.setWidth(1280);
+        primaryStage.setHeight(720);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
