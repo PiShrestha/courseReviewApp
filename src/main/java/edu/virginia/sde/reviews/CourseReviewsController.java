@@ -39,6 +39,9 @@ public class CourseReviewsController {
     @FXML
     private TableColumn<Review, Void> actionColumn;
 
+    @FXML
+    private TextField averageRatingField;
+
     private UserService userService;
     private CourseService courseService;
     private ReviewService reviewService;
@@ -75,6 +78,8 @@ public class CourseReviewsController {
         try {
             List<Review> reviews = reviewService.getReviewsForCourse(courseId);
             reviewsTable.setItems(FXCollections.observableList(reviews));
+            double averageRating = reviewService.getAverageRatingForCourse(courseId);
+            averageRatingField.setText(String.format("%.2f", averageRating));
         } catch (Exception e) {
             showError("Failed to load reviews. Please try again.");
         }
