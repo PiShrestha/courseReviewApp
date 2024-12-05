@@ -1,14 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="edu.virginia.sde.reviews.CourseReviewsController"
-            prefHeight="400.0" prefWidth="600.0" >
+            prefHeight="500.0" prefWidth="700.0">
+    <children>
+        <VBox spacing="15" alignment="TOP_CENTER" AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="10.0"
+              AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+            <Label text="Course Reviews" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
 
+            <Label fx:id="messageLabel" style="-fx-font-size: 14px; -fx-text-fill: red;" />
+
+            <TableView fx:id="reviewsTable" prefHeight="250" prefWidth="650">
+                <columns>
+                    <TableColumn fx:id="ratingColumn" text="Rating" prefWidth="150" />
+                    <TableColumn fx:id="commentColumn" text="Comment" prefWidth="450" />
+                    <TableColumn fx:id="timestampColumn" text="Timestamp" prefWidth="150" />
+                </columns>
+            </TableView>
+
+            <VBox spacing="10" alignment="CENTER">
+                <TextArea fx:id="commentTextArea" promptText="Write your review here..." prefHeight="100" prefWidth="600" />
+                <TextField fx:id="ratingField" promptText="Rating (1-5)" prefWidth="150" />
+                <Button text="Add Review" onAction="#handleAddReview" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" />
+            </VBox>
+
+            <Button text="Back to Course Search" onAction="#navigateToCourseSearch" style="-fx-background-color: #f44336; -fx-text-fill: white;" />
+        </VBox>
+    </children>
 </AnchorPane>

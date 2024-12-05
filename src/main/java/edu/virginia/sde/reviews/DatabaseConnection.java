@@ -100,7 +100,7 @@ public class DatabaseConnection {
                     CourseID INTEGER NOT NULL,
                     Rating INTEGER NOT NULL,
                     Comment TEXT,
-                    Timestamp TEXT NOT NULL,
+                    Timestamp TIMESTAMP NOT NULL,
                     FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE,
                     FOREIGN KEY (CourseID) REFERENCES Courses(CourseID) ON DELETE CASCADE,
                     CONSTRAINT UniqueReview UNIQUE (UserID, CourseID)
@@ -115,9 +115,9 @@ public class DatabaseConnection {
      */
     public void clearTables() throws SQLException {
         try (Statement preparedStatement = connection.createStatement()) {
+            preparedStatement.execute("DELETE FROM Reviews;");
             preparedStatement.execute("DELETE FROM Users;");
             preparedStatement.execute("DELETE FROM Courses;");
-            preparedStatement.execute("DELETE FROM Reviews;");
         } catch (SQLException e) {
             rollback();
             throw e;
