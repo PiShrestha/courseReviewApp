@@ -34,6 +34,7 @@
                             style="-fx-background-color: #4CAF50; -fx-text-fill: white;" />
                     <Button text="Update Review" onAction="#handleUpdateReview"
                             style="-fx-background-color: #FFA500; -fx-text-fill: white;" />
+                    <Button text="Delete Review" onAction="#handleDeleteReview" />
                 </HBox>
             </VBox>
 

@@ -193,6 +193,30 @@ public class CourseReviewsController {
         }
     }
 
+    @FXML
+    private void handleDeleteReview() {
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmAlert.setTitle("Delete Review");
+        confirmAlert.setHeaderText(null);
+        confirmAlert.setContentText("Are you sure you want to delete this review?");
+
+        Optional<ButtonType> result = confirmAlert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                // Delete the review
+                Optional<String> deleteResult = reviewService.deleteReview(courseId);
+                if (deleteResult.isPresent()) {
+                    showError(deleteResult.get());
+                } else {
+                    showSuccess("Review deleted successfully!");
+                    loadReviews(); // Reload the reviews table
+                }
+            } catch (Exception e) {
+                showError("An error occurred while deleting the review.");
+            }
+        }
+    }
+
     private void showError(String message) {
         messageLabel.setStyle("-fx-text-fill: red;");
         messageLabel.setText(message);
