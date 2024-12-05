@@ -204,7 +204,10 @@ public class CourseReviewsController {
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
                 // Delete the review
-                Optional<String> deleteResult = reviewService.deleteReview(courseId);
+                Optional<Review> userReview = reviewService.getReviewsForCourse(courseId).stream()
+                        .filter(review -> review.getUserId() == userService.getCurrentUser().getId())
+                        .findFirst();
+                Optional<String> deleteResult = reviewService.deleteReview(userReview.get().getId());
                 if (deleteResult.isPresent()) {
                     showError(deleteResult.get());
                 } else {
