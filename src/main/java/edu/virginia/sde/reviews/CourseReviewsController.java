@@ -260,19 +260,31 @@ public class CourseReviewsController {
                     updatedReview.setRating(rating);
                     updatedReview.setComment(comment);
                     updatedReview.setTimestamp(currentTimestamp);
-                    reviewService.updateReview(updatedReview);
-                    showSuccess("Review updated successfully!");
+                    Optional<String> result = reviewService.updateReview(updatedReview);
+                    if(!result.isPresent()) {
+                        showSuccess("Review updated successfully!");
+                        // Once the user successfully updates the review, disable the Review Box
+                        toggleReviewBox(false, "");
+                    }else{
+                        showError(result.get());
+                    }
                 } else {
                     showError("No review found to update.");
+                    toggleReviewBox(false, "");
                 }
             } else {
                 Review newReview = new Review(courseId, userService.getCurrentUser().getId(), rating, comment, currentTimestamp);
-                reviewService.createReview(newReview);
-                showSuccess("Review added successfully!");
+                Optional<String> result =  reviewService.createReview(newReview);
+                if(!result.isPresent()) {
+                    showSuccess("Review added successfully!");
+                    // Once the user successfully adds the review, disable the Review Box
+                    toggleReviewBox(false, "");
+                }else{
+                    showError(result.get());
+                }
             }
 
-            // Once the user successfully adds the review, disable the Review Box
-            toggleReviewBox(false, "");
+
             loadReviews();
         } catch (NumberFormatException e) {
             showError("Rating must be a valid integer number.");

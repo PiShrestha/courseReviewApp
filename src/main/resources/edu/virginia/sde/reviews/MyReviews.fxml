@@ -6,7 +6,8 @@
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.MyReviewsController">
     <children>
         <VBox alignment="TOP_CENTER" spacing="10" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-            <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="My Reviews" />
+            <Label style="-fx-font-size: 28px; -fx-font-weight: bold;" text="My Reviews" />
+            <Label fx:id="messageLabel" style=" -fx-text-fill: green;" />
             <TableView fx:id="reviewsTable" prefHeight="600" prefWidth="600">
                 <columns>
                     <TableColumn fx:id="courseColumn" text="Course" />

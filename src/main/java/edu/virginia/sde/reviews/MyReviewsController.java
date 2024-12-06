@@ -38,6 +38,9 @@ public class MyReviewsController {
     @FXML
     private TableColumn<Review, Void> deleteColumn;
 
+    @FXML
+    private Label messageLabel;
+
     private CourseService courseService;
     private ReviewService reviewService;
     private UserService userService;
@@ -158,9 +161,10 @@ public class MyReviewsController {
             if (deleteResult.isPresent()) {
                 showError("Error: " + deleteResult.get());
             } else {
+                String courseDetails = getCourseNameById(review.getCourseId());
                 // Remove review from TableView
                 reviewsTable.getItems().remove(review);
-                showInfo("Review deleted successfully.");
+                showSuccess("Review for " + courseDetails + " deleted successfully.");
             }
         }
     }
@@ -209,19 +213,13 @@ public class MyReviewsController {
     }
 
     private void showError(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+        messageLabel.setText(message);
+        messageLabel.setStyle("-fx-text-fill: red;");
     }
 
-    private void showInfo(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+    private void showSuccess(String message) {
+        messageLabel.setText(message);
+        messageLabel.setStyle("-fx-text-fill: green;");
     }
 
     private String getCourseNameById(int courseId) {
