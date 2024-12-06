@@ -3,7 +3,7 @@
 
 ## Authors
 1) Pratik Shrestha, jpj8rf, [PiShrestha]
-2) Name, netid, [GitHub profile name]
+2) Kyle Luong, auj7tx, [kyle-luong]
 3) Name, netid, [GitHub profile name]
 
 ## To Run
@@ -33,11 +33,14 @@ List the primary contributions of each author. It is recommended to update this 
 * Made LoginController for user login and registration, with a matching login screen.
 * Built CourseReviewsController for adding, updating, and viewing reviews, with a user-friendly interface.
 
-### [Author 2 - replace this with their name]
+### Kyle Luong
 
-* Author 2 contributions
-* as a bulleted list
-* each line starts with an asterisk and a space
+* Designed initial structure for models, database, services, and controllers with fxml
+* Implemented DatabaseConnection for a single main database and ReviewsDatabase to describe the Reviews table
+* Implemented CourseService for services interacting with course data
+* Changed CourseReviewApplication for project specifications
+* Fixes in UserService, LoginController, CourseDatabase, and fxml for titles and login background
+* Did system testing and minor specifications like duplicate courses, enter keypresses, ect.
 
 ### [Author 3 - replace this with their name]
 
