@@ -86,6 +86,11 @@ public class LoginController {
         passwordField.setOnKeyPressed(event -> handleEnterOnInput(event));
         registerUsernameField.setOnKeyPressed(event -> handleEnterOnInput(event));
         registerPasswordField.setOnKeyPressed(event -> handleEnterOnInput(event));
+
+        usernameField.setFocusTraversable(false);
+        registerUsernameField.setFocusTraversable(false);
+        passwordField.setFocusTraversable(false);
+        registerPasswordField.setFocusTraversable(false);
     }
 
     private void handleEnterOnInput(KeyEvent keyEvent) {

@@ -90,6 +90,7 @@ public class CourseSearchController {
         });
 
         coursesTable.setFocusTraversable(false);
+        searchField.setFocusTraversable(false);
         coursesTable.setPlaceholder(new Label("No courses available."));
     }
 

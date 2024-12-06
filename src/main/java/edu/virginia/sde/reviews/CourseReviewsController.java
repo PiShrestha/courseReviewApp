@@ -113,6 +113,8 @@ public class CourseReviewsController {
         addActionButtonToTable();
 
         reviewsTable.setFocusTraversable(false);
+        ratingField.setFocusTraversable(false);
+        commentTextArea.setFocusTraversable(false);
         reviewsTable.setPlaceholder(new Label("No reviews available for this course."));
     }
 
