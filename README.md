@@ -8,7 +8,18 @@
 
 ## To Run
 
-[Add a brief description of which .java file to run, and what vm arguments are needed]
+## Running the Application
+
+#### If macuser, then the permissions gradlew file needs to be executed:
+`chmod +x gradlew`
+
+#### Use the following command to compile and build the application:
+`./gradlew build`
+
+#### Start the application with:
+`./gradlew run`
+
+Ensure the login screen is displayed upon running the application.
 
 ## Contributions
 
@@ -21,7 +32,7 @@ List the primary contributions of each author. It is recommended to update this 
 * Developed UserService and CourseService to handle app logic and connect controllers to the database.
 * Made LoginController for user login and registration, with a matching login screen.
 * Built CourseReviewsController for adding, updating, and viewing reviews, with a user-friendly interface.
-* 
+
 ### [Author 2 - replace this with their name]
 
 * Author 2 contributions
