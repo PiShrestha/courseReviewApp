@@ -1,9 +1,12 @@
 package edu.virginia.sde.reviews;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -19,10 +22,19 @@ public class LoginController {
     private PasswordField passwordField;
 
     @FXML
-    private Label label;
+    private Label loginErrorLabel;
 
     @FXML
-    private Label titleLabel;
+    private Label registerErrorLabel;
+
+    @FXML
+    private Label loginLabel;
+
+    @FXML
+    private Label signUpLabel;
+
+    @FXML
+    private Label registerSuccessLabel;
 
     @FXML
     private VBox loginBox;
@@ -57,8 +69,32 @@ public class LoginController {
 
     @FXML
     public void initialize() {
-        if (label != null) {
-            label.setVisible(false);
+        if (loginErrorLabel != null) {
+            loginErrorLabel.setVisible(false);
+            loginErrorLabel.setManaged(false);
+        }
+        if (registerErrorLabel != null) {
+            registerErrorLabel.setVisible(false);
+            registerErrorLabel.setManaged(false);
+        }
+        if (registerSuccessLabel != null) {
+            registerSuccessLabel.setVisible(false);
+            registerSuccessLabel.setManaged(false);
+        }
+
+        usernameField.setOnKeyPressed(event -> handleEnterOnInput(event));
+        passwordField.setOnKeyPressed(event -> handleEnterOnInput(event));
+        registerUsernameField.setOnKeyPressed(event -> handleEnterOnInput(event));
+        registerPasswordField.setOnKeyPressed(event -> handleEnterOnInput(event));
+    }
+
+    private void handleEnterOnInput(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            if (isLoginMode) {
+                handleLoginButton();
+            } else {
+                handleRegisterButton();
+            }
         }
     }
 
@@ -68,7 +104,7 @@ public class LoginController {
         String password = passwordField.getText();
 
         if (username.isEmpty() || password.isEmpty()) {
-            displayLabel("Username and password cannot be empty.");
+            displayError("Username and password cannot be empty.");
             return;
         }
 
@@ -76,8 +112,13 @@ public class LoginController {
         if (userService.loginUser(user)) {
             switchToCourseSearch();
         } else {
-            displayLabel("Invalid username or password.");
+            displayError("Invalid username or password.");
         }
+    }
+
+    @FXML
+    public void handleCloseButton() {
+        Platform.exit();
     }
 
     @FXML
@@ -93,9 +134,9 @@ public class LoginController {
         User user = new User(username, password);
         Optional<String> registerResult = userService.registerUser(user);
         if (registerResult.isPresent()) {
-            displayLabel(registerResult.get());
+            displayError(registerResult.get());
         } else {
-            displayLabel("Registration successful! Please log in.");
+            displaySuccess("Registration successful! Please log in.");
             toggle();
         }
     }
@@ -106,6 +147,9 @@ public class LoginController {
             loginBox.setVisible(false);
             loginBox.setManaged(false);
 
+            // clear() so that username and password fields are cleared when switching between the login box and registration box
+            usernameField.clear();
+            passwordField.clear();
             registrationBox.setVisible(true);
             registrationBox.setManaged(true);
 
@@ -114,6 +158,8 @@ public class LoginController {
             loginBox.setVisible(true);
             loginBox.setManaged(true);
 
+            registerUsernameField.clear();
+            registerPasswordField.clear();
             registrationBox.setVisible(false);
             registrationBox.setManaged(false);
 
@@ -121,12 +167,35 @@ public class LoginController {
         }
 
         isLoginMode = !isLoginMode;
-        label.setVisible(false);
+
+        loginErrorLabel.setVisible(false);
+        loginErrorLabel.setManaged(false);
+        registerErrorLabel.setVisible(false);
+        registerErrorLabel.setManaged(false);
+        registerSuccessLabel.setVisible(false);
+        registerSuccessLabel.setManaged(false);
     }
 
-    private void displayLabel(String message) {
-        label.setText(message);
-        label.setVisible(true);
+    private void displayError(String message) {
+        if (isLoginMode) {
+            loginErrorLabel.setText(message);
+            loginErrorLabel.setVisible(true);
+            loginErrorLabel.setManaged(true);
+        } else {
+            registerErrorLabel.setText(message);
+            registerErrorLabel.setVisible(true);
+            registerErrorLabel.setManaged(true);
+            registerSuccessLabel.setVisible(false);
+            registerSuccessLabel.setManaged(false);
+        }
+    }
+
+    private void displaySuccess(String message) {
+        registerSuccessLabel.setText(message);
+        registerSuccessLabel.setVisible(true);
+        registerSuccessLabel.setManaged(true);
+        registerErrorLabel.setVisible(false);
+        registerErrorLabel.setManaged(false);
     }
 
     private void switchToCourseSearch() {
@@ -139,7 +208,7 @@ public class LoginController {
             primaryStage.setScene(newScene);
             primaryStage.show();
         } catch (IOException e) {
-            displayLabel("Failed to load the Course Search screen.");
+            displayError("Failed to load the Course Search screen.");
         }
     }
 }
