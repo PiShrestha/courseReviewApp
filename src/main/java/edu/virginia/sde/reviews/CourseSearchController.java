@@ -65,6 +65,9 @@ public class CourseSearchController {
         searchField.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) handleSearch();
         });
+
+        coursesTable.setFocusTraversable(false);
+        coursesTable.setPlaceholder(new Label("No courses available."));
     }
 
     private void setupRowFactory() {

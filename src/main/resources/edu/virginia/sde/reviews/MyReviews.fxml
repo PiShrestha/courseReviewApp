@@ -11,7 +11,7 @@
                 <columns>
                     <TableColumn fx:id="courseColumn" text="Course" />
                     <TableColumn fx:id="ratingColumn" text="Rating" />
-                    <TableColumn fx:id="commentColumn" text="Comment" prefWidth="600"/>
+                    <TableColumn fx:id="commentColumn" text="Comment" prefWidth="500"/>
                     <TableColumn fx:id="timestampColumn" text="Timestamp"/>
                     <TableColumn fx:id="deleteColumn" text="Action" />
                 </columns>
@@ -20,6 +20,11 @@
             </columnResizePolicy>
             </TableView>
             <Button onAction="#navigateToCourseSearch" text="Back" />
+
+            <HBox alignment="BOTTOM_RIGHT">
+                <Button text="Back to Course Search" onAction="#navigateToCourseSearch"
+                        style="-fx-background-color: #f44336; -fx-text-fill: white;" />
+            </HBox>
         </VBox>
     </children>
 </AnchorPane>

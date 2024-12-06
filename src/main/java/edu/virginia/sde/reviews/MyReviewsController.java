@@ -113,6 +113,7 @@ public class MyReviewsController {
             }
         });
 
+        reviewsTable.setFocusTraversable(false);
         setupRowFactory();
     }
 

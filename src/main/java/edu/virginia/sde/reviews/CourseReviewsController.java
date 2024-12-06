@@ -111,6 +111,9 @@ public class CourseReviewsController {
 
         messageLabel.setText("");
         addActionButtonToTable();
+
+        reviewsTable.setFocusTraversable(false);
+        reviewsTable.setPlaceholder(new Label("No reviews available for this course."));
     }
 
     @FXML
@@ -124,7 +127,7 @@ public class CourseReviewsController {
                 // courseNameField.setText(course.get().getTitle());
                 double averageRating = reviewService.getAverageRatingForCourse(courseId);
                 // averageRatingField.setText(String.format("%.2f", averageRating));
-                courseNameLabel.setText("Course name: " + course.get().getTitle());
+                courseNameLabel.setText(course.get().getMnemonic() + " " + course.get().getNumber() + ": " + course.get().getTitle());
                 courseAverageLabel.setText(String.format("Course Average: %.2f", averageRating));
             }
             else {
