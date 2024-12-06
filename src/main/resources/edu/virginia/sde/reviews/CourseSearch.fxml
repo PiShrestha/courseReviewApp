@@ -23,7 +23,7 @@
                 <Button text="Search" onAction="#handleSearch" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" />
             </HBox>
 
-            <TableView fx:id="coursesTable" prefHeight="400" prefWidth="650" style="-fx-border-radius: 5;">
+            <TableView fx:id="coursesTable" prefHeight="600" prefWidth="650" style="-fx-border-radius: 5;">
                 <columns>
                     <TableColumn fx:id="mnemonicColumn" text="Mnemonic" prefWidth="100" />
                     <TableColumn fx:id="numberColumn" text="Number" prefWidth="100" />

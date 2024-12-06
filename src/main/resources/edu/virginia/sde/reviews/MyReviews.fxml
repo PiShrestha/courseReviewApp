@@ -7,7 +7,7 @@
     <children>
         <VBox alignment="TOP_CENTER" spacing="10" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
             <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="My Reviews" />
-            <TableView fx:id="reviewsTable" prefHeight="400" prefWidth="600">
+            <TableView fx:id="reviewsTable" prefHeight="600" prefWidth="600">
                 <columns>
                     <TableColumn fx:id="courseColumn" text="Course" />
                     <TableColumn fx:id="ratingColumn" text="Rating" />
