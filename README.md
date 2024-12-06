@@ -44,10 +44,12 @@ List the primary contributions of each author. It is recommended to update this 
 
 ### [Author 3 - replace this with their name]
 
-* Author 3 contributions
-* as a bulleted list
-* each line starts with an asterisk and a space
+* Implemented MyReviewsController and MyReviews.fxml to make the functionality for a user to see their reviews
+* Implemented CourseSearchController and CourseSearch.fxml to allow a user to search for a course
+* Added Course Name and Average Rating fields to CourseReviewsController and CourseReviews.fxml
+* Implemented method for deleting reviews in CourseReviewsController, and added a button for deletion in CourseReviews.fxml
+* Did system testing
 
 ## Issues
 
-List any known issues (bugs, incorrect behavior, etc.) at the time of submission.
+N/A
