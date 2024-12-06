@@ -79,6 +79,16 @@ public class CourseSearchController {
             if (keyEvent.getCode() == KeyCode.ENTER) handleSearch();
         });
 
+        mnemonicField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) handleSubmitCourse();
+        });
+        numberField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) handleSubmitCourse();
+        });
+        titleField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) handleSubmitCourse();
+        });
+
         coursesTable.setFocusTraversable(false);
         coursesTable.setPlaceholder(new Label("No courses available."));
     }

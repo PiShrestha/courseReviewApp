@@ -2,9 +2,6 @@
 .gradle
 /build/
 
-# No database should be pushed to GitHub
-**/*.db
-
 # Ignore Gradle GUI config
 gradle-app.setting
 
