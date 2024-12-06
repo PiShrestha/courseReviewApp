@@ -47,6 +47,12 @@ public class CourseSearchController {
     @FXML
     private TextField titleField;
 
+    @FXML
+    private Label errorLabel;
+
+    @FXML
+    private Label successLabel;
+
     private CourseService courseService;
     private UserService userService;
     private ReviewService reviewService;
@@ -92,6 +98,11 @@ public class CourseSearchController {
         coursesTable.setFocusTraversable(false);
         searchField.setFocusTraversable(false);
         coursesTable.setPlaceholder(new Label("No courses available."));
+
+        errorLabel.setVisible(false);
+        errorLabel.setManaged(false);
+        successLabel.setVisible(false);
+        successLabel.setManaged(false);
     }
 
     private void setupRowFactory() {
@@ -153,6 +164,7 @@ public class CourseSearchController {
             courseService.addCourse(newCourse);
             loadCourses(); // Refresh the table
             hideAddCourseForm();
+            showSuccess("Course added successfully!");
         } catch (IllegalArgumentException e) {
             showError(e.getMessage());
         }
@@ -221,11 +233,29 @@ public class CourseSearchController {
     }
 
     private void showError(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+        successLabel.setVisible(false);
+        successLabel.setManaged(false);
+
+        errorLabel.setText(message);
+        errorLabel.setVisible(true);
+        errorLabel.setManaged(true);
+    }
+
+    private void showSuccess(String message) {
+        errorLabel.setVisible(false);
+        errorLabel.setManaged(false);
+
+        successLabel.setText(message);
+        successLabel.setVisible(true);
+        successLabel.setManaged(true);
+    }
+
+    private void clearMessages() {
+        errorLabel.setVisible(false);
+        errorLabel.setManaged(false);
+
+        successLabel.setVisible(false);
+        successLabel.setManaged(false);
     }
 
 }

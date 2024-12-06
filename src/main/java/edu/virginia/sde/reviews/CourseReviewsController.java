@@ -115,6 +115,7 @@ public class CourseReviewsController {
         reviewsTable.setFocusTraversable(false);
         ratingField.setFocusTraversable(false);
         commentTextArea.setFocusTraversable(false);
+        commentTextArea.setWrapText(true);
         reviewsTable.setPlaceholder(new Label("No reviews available for this course."));
     }
 

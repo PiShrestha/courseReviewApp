@@ -17,6 +17,8 @@
               AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0">
 
             <Label text="Course Search" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+            <Label fx:id="errorLabel" text="" style="-fx-text-fill: red;" />
+            <Label fx:id="successLabel" text="" style="-fx-text-fill: green;" />
 
             <HBox spacing="10" alignment="CENTER">
                 <TextField fx:id="searchField" promptText="Search by subject, number, and/or title" prefWidth="400" />
