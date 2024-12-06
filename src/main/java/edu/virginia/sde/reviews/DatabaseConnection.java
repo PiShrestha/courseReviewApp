@@ -83,7 +83,7 @@ public class DatabaseConnection {
             CREATE TABLE IF NOT EXISTS Courses (
                 CourseID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 SubjectMnemonic TEXT NOT NULL,
-                CourseNumber INTEGER NOT NULL,
+                CourseNumber TEXT NOT NULL,
                 Title TEXT NOT NULL,
                 CONSTRAINT UniqueCourse UNIQUE (SubjectMnemonic, CourseNumber, Title)
             )

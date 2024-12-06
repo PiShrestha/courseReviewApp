@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -26,13 +27,25 @@ public class CourseSearchController {
     private TableColumn<Course, String> mnemonicColumn;
 
     @FXML
-    private TableColumn<Course, Integer> numberColumn;
+    private TableColumn<Course, String> numberColumn;
 
     @FXML
     private TableColumn<Course, String> titleColumn;
 
     @FXML
     private TableColumn<Course, String> ratingColumn;
+
+    @FXML
+    private VBox addCourseForm;
+
+    @FXML
+    private TextField mnemonicField;
+
+    @FXML
+    private TextField numberField;
+
+    @FXML
+    private TextField titleField;
 
     private CourseService courseService;
     private UserService userService;
@@ -103,38 +116,41 @@ public class CourseSearchController {
     }
 
     @FXML
-    private void handleAddCourse() {
-        // Create a dialog for course input
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Add Course");
-        dialog.setHeaderText("Enter course details in the format: Mnemonic, Number, Title");
+    private void showAddCourseForm() {
+        addCourseForm.setVisible(true);
+        addCourseForm.setManaged(true);
+    }
 
-        // Show the dialog and capture user input
-        Optional<String> result = dialog.showAndWait();
-        result.ifPresent(input -> {
-            String[] parts = input.split(",", 3);
-            if (parts.length != 3) {
-                showError("Invalid format. Please use: Mnemonic, Number, Title");
-                return;
-            }
+    @FXML
+    private void hideAddCourseForm() {
+        addCourseForm.setVisible(false);
+        addCourseForm.setManaged(false);
+        clearAddCourseForm();
+    }
 
-            try {
-                String mnemonic = parts[0].trim();
-                int number = Integer.parseInt(parts[1].trim());
-                String title = parts[2].trim();
-                Course newCourse = new Course(mnemonic, number, title);
-                if (courseService.courseExists(newCourse)) {
-                    showError("Invalid Course: Course already exists.");
-                    return;
-                }
-                courseService.addCourse(newCourse);
-                loadCourses(); // Refresh the table
-            } catch (NumberFormatException e) {
-                showError("Course number must be a valid 4-digit integer.");
-            } catch (IllegalArgumentException e) {
-                showError(e.getMessage());
+    @FXML
+    private void handleSubmitCourse() {
+        try {
+            String mnemonic = mnemonicField.getText().trim().toUpperCase();
+            String numberText = numberField.getText().trim();
+            String title = titleField.getText().trim();
+
+            Course newCourse = new Course(mnemonic, numberText, title);
+            if (courseService.courseExists(newCourse)) {
+                throw new IllegalArgumentException("Course already exists.");
             }
-        });
+            courseService.addCourse(newCourse);
+            loadCourses(); // Refresh the table
+            hideAddCourseForm();
+        } catch (IllegalArgumentException e) {
+            showError(e.getMessage());
+        }
+    }
+
+    private void clearAddCourseForm() {
+        mnemonicField.clear();
+        numberField.clear();
+        titleField.clear();
     }
 
     @FXML

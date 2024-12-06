@@ -18,7 +18,7 @@ public class CourseDatabase {
                     VALUES (?, ?, ?);
                  """)) {
                 addCourseStatement.setString(1, course.getMnemonic());
-                addCourseStatement.setInt(2, course.getNumber());
+                addCourseStatement.setString(2, course.getNumber());
                 addCourseStatement.setString(3, course.getTitle());
                 addCourseStatement.executeUpdate();
                 DATABASE_CONNECTION.commit();
@@ -43,7 +43,7 @@ public class CourseDatabase {
                     return new Course(
                             resultSet.getInt("CourseID"),
                             resultSet.getString("SubjectMnemonic"),
-                            resultSet.getInt("CourseNumber"),
+                            resultSet.getString("CourseNumber"),
                             resultSet.getString("Title")
                     );
                 }
@@ -75,7 +75,7 @@ public class CourseDatabase {
                     courses.add(new Course(
                             resultSet.getInt("CourseID"),
                             resultSet.getString("SubjectMnemonic"),
-                            resultSet.getInt("CourseNumber"),
+                            resultSet.getString("CourseNumber"),
                             resultSet.getString("Title")
                     ));
                 }
@@ -100,7 +100,7 @@ public class CourseDatabase {
                     courses.add(new Course(
                             resultSet.getInt("CourseID"),
                             resultSet.getString("SubjectMnemonic"),
-                            resultSet.getInt("CourseNumber"),
+                            resultSet.getString("CourseNumber"),
                             resultSet.getString("Title")
                     ));
                 }
@@ -118,7 +118,7 @@ public class CourseDatabase {
                 WHERE LOWER(SubjectMnemonic) = LOWER(?) AND CourseNumber = ? AND LOWER(Title) = LOWER(?);
             """)){
             stmt.setString(1, course.getMnemonic());
-            stmt.setInt(2, course.getNumber());
+            stmt.setString(2, course.getNumber());
             stmt.setString(3, course.getTitle());
 
             ResultSet resultSet = stmt.executeQuery();

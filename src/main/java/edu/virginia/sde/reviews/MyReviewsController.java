@@ -113,6 +113,7 @@ public class MyReviewsController {
             }
         });
 
+        reviewsTable.setPlaceholder(new Label("You have no Reviews available."));
         reviewsTable.setFocusTraversable(false);
         setupRowFactory();
     }

@@ -35,8 +35,22 @@
                 </columnResizePolicy>
             </TableView>
 
+            <VBox fx:id="addCourseForm" spacing="10" alignment="CENTER" visible="false" managed="false"
+                  style="-fx-border-color: #ccc; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: #f9f9f9;">
+                <Label text="Add a New Course" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+                <HBox spacing="10" alignment="CENTER">
+                    <TextField fx:id="mnemonicField" promptText="Mnemonic (2-4 letters)" />
+                    <TextField fx:id="numberField" promptText="Course Number (4 digits)" />
+                    <TextField fx:id="titleField" promptText="Course Title (1-50 characters)" prefWidth="250"/>
+                </HBox>
+                <HBox spacing="10" alignment="CENTER">
+                    <Button text="Add" onAction="#handleSubmitCourse"/>
+                    <Button text="Cancel" onAction="#hideAddCourseForm"/>
+                </HBox>
+            </VBox>
+
             <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
-                <Button text="Add Course" onAction="#handleAddCourse"
+                <Button text="Add Course" onAction="#showAddCourseForm"
                         style="-fx-background-color: #459de3; -fx-text-fill: white;" />
                 <Button text="My Reviews" onAction="#navigateToMyReviews"
                         style="-fx-background-color: #efbd60; -fx-text-fill: white;" />

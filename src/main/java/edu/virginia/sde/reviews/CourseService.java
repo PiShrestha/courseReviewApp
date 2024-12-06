@@ -23,8 +23,8 @@ public class CourseService {
         if (course.getMnemonic() == null || course.getMnemonic().length() < 2 || course.getMnemonic().length() > 4 || !course.getMnemonic().matches("[a-zA-Z]+")) {
             throw new IllegalArgumentException("Invalid subject: must be 2-4 letters.");
         }
-        if (course.getNumber() < 1000 || course.getNumber() > 9999) {
-            throw new IllegalArgumentException("Invalid course number: must be a 4-digit number.");
+        if (course.getNumber() == null || !course.getNumber().matches("\\d{4}")) {
+            throw new IllegalArgumentException("Invalid course number: must be exactly 4 digits.");
         }
         if (course.getTitle() == null || course.getTitle().length() < 1 || course.getTitle() .length() > 50) {
             throw new IllegalArgumentException("Invalid title: must be between 1 and 50 characters.");
