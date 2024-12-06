@@ -4,7 +4,7 @@
 ## Authors
 1) Pratik Shrestha, jpj8rf, [PiShrestha]
 2) Kyle Luong, auj7tx, [kyle-luong]
-3) Name, netid, [GitHub profile name]
+3) Abhinav Potluri, nsv9qf, [abhinvpotluri01]
 
 ## To Run
 
@@ -42,7 +42,7 @@ List the primary contributions of each author. It is recommended to update this 
 * Fixes in UserService, LoginController, CourseDatabase, and fxml for titles and login background
 * Did system testing and minor specifications like duplicate courses, enter keypresses, ect.
 
-### [Author 3 - replace this with their name]
+### Abhinav Potluri
 
 * Implemented MyReviewsController and MyReviews.fxml to make the functionality for a user to see their reviews
 * Implemented CourseSearchController and CourseSearch.fxml to allow a user to search for a course
