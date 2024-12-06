@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -77,6 +78,22 @@ public class CourseReviewsController {
         ratingColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getRating()));
         commentColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getComment()));
         timestampColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getTimestamp()));
+
+        commentColumn.setCellFactory(param -> new TableCell<>() {
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    Text text = new Text(item);
+                    text.wrappingWidthProperty().bind(commentColumn.widthProperty());
+                    setGraphic(text);
+                }
+            }
+        });
 
         messageLabel.setText("");
         addActionButtonToTable();
@@ -223,7 +240,7 @@ public class CourseReviewsController {
         Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmAlert.setTitle("Delete Review");
         confirmAlert.setHeaderText(null);
-        confirmAlert.setContentText("Are you sure you want to delete this review?");
+        confirmAlert.setContentText("Are you sure you want to delete your review?");
 
         Optional<ButtonType> result = confirmAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {

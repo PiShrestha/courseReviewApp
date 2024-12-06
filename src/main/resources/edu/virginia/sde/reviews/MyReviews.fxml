@@ -11,8 +11,8 @@
                 <columns>
                     <TableColumn fx:id="courseColumn" text="Course" />
                     <TableColumn fx:id="ratingColumn" text="Rating" />
-                    <TableColumn fx:id="commentColumn" text="Comment" />
-                    <TableColumn fx:id="timestampColumn" text="Timestamp" />
+                    <TableColumn fx:id="commentColumn" text="Comment" prefWidth="600"/>
+                    <TableColumn fx:id="timestampColumn" text="Timestamp"/>
                     <TableColumn fx:id="deleteColumn" text="Action" />
                 </columns>
             <columnResizePolicy>
