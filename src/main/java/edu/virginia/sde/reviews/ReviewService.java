@@ -23,7 +23,7 @@ public class ReviewService {
 
     public Optional<String> createReview(Review review) {
         if (review.getRating() < 1 || review.getRating() > 5) {
-            return Optional.of("Rating must be between 1 and 5.");
+            return Optional.of("Rating must be an integer between 1 and 5.");
         }
 
         try {
@@ -39,7 +39,7 @@ public class ReviewService {
 
     public Optional<String> updateReview(Review review) {
         if (review.getRating() < 1 || review.getRating() > 5) {
-            return Optional.of("Rating must be between 1 and 5.");
+            return Optional.of("Rating must be an integer between 1 and 5.");
         }
 
         try {
