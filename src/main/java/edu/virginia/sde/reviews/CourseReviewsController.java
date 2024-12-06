@@ -46,6 +46,11 @@ public class CourseReviewsController {
     @FXML
     private TextField courseNameField;
 
+    @FXML
+    private Label courseAverageLabel;
+    @FXML
+    private Label courseNameLabel;
+
     private UserService userService;
     private CourseService courseService;
     private ReviewService reviewService;
@@ -85,9 +90,12 @@ public class CourseReviewsController {
 
             Optional<Course> course = courseService.getCourseById(courseId);
             if (course.isPresent()) {
-                courseNameField.setText(course.get().getTitle());
+                // courseNameField.setText(course.get().getTitle());
                 double averageRating = reviewService.getAverageRatingForCourse(courseId);
-                averageRatingField.setText(String.format("%.2f", averageRating));
+                // averageRatingField.setText(String.format("%.2f", averageRating));
+                courseNameLabel.setText("Course name: " + course.get().getTitle());
+                courseAverageLabel.setText("Course Average: " + averageRating);
+
             }
             else {
                 courseNameField.setText("Course not found");
