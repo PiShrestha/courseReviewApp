@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.text.Text;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class CourseReviewsController {
 
@@ -24,6 +23,9 @@ public class CourseReviewsController {
 
     @FXML
     private TableView<Review> reviewsTable;
+
+    @FXML
+    private TableColumn<Review, Void> currentUser;
 
     @FXML
     private TableColumn<Review, Integer> ratingColumn;
@@ -35,19 +37,28 @@ public class CourseReviewsController {
     private TableColumn<Review, String> timestampColumn;
 
     @FXML
+    private VBox reviewBox;
+
+    @FXML
     private TextArea commentTextArea;
 
     @FXML
     private TextField ratingField;
 
     @FXML
-    private TableColumn<Review, Void> actionColumn;
+    private Button addReviewButton;
 
     @FXML
-    private TextField averageRatingField;
+    private Button editReviewButton;
 
     @FXML
-    private TextField courseNameField;
+    private Button deleteReviewButton;
+
+    @FXML
+    private Button submitReviewButton;
+
+    @FXML
+    private Button cancelReviewButton;
 
     @FXML
     private Label courseAverageLabel;
@@ -59,6 +70,9 @@ public class CourseReviewsController {
     private ReviewService reviewService;
     private Stage primaryStage;
     private int courseId;
+
+    // This is only true when user is updating their code
+    private boolean isUpdating = false;
 
     public void setServices(UserService userService, CourseService courseService, ReviewService reviewService) {
         this.userService = userService;
@@ -79,10 +93,7 @@ public class CourseReviewsController {
     private void initialize() {
         ratingColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getRating()));
         commentColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getComment()));
-        // Referenced for DateTimeFormatter.ofPattern usage:
-        // https://stackoverflow.com/questions/35156809/parsing-a-date-using-datetimeformatter-ofpattern
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy, h:mm a");
-
         timestampColumn.setCellValueFactory(data -> {
             Timestamp timestamp = data.getValue().getTimestamp();
             if (timestamp != null) {
@@ -93,30 +104,40 @@ public class CourseReviewsController {
                 return new SimpleObjectProperty<>("");
             }
         });
-        commentColumn.setCellFactory(param -> new TableCell<>() {
+
+        // New column so the user can know which one is their comment
+        currentUser.setCellFactory(col -> new TableCell<>() {
 
             @Override
-            protected void updateItem(String item, boolean empty) {
+            protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-
-                if (empty || item == null) {
+                if (empty) {
                     setGraphic(null);
                 } else {
-                    Text text = new Text(item);
-                    text.wrappingWidthProperty().bind(commentColumn.widthProperty());
-                    setGraphic(text);
+                    Review review = getTableView().getItems().get(getIndex());
+                    if (review.getUserId() == userService.getCurrentUser().getId()) {
+                        setGraphic(new Label("*"));
+                    } else {
+                        setGraphic(null);
+                    }
                 }
             }
         });
 
-        messageLabel.setText("");
-        addActionButtonToTable();
-
         reviewsTable.setFocusTraversable(false);
-        ratingField.setFocusTraversable(false);
         commentTextArea.setFocusTraversable(false);
         commentTextArea.setWrapText(true);
         reviewsTable.setPlaceholder(new Label("No reviews available for this course."));
+
+        // Initially, the reviewBox is not visible
+        reviewBox.setVisible(false);
+        reviewBox.setManaged(false);
+
+        // The following code dynamically toggles the reviewBox's visibility based on the presence of the userReview
+        editReviewButton.setVisible(false);
+        editReviewButton.setManaged(false);
+        deleteReviewButton.setVisible(false);
+        deleteReviewButton.setManaged(false);
     }
 
     @FXML
@@ -127,131 +148,58 @@ public class CourseReviewsController {
 
             Optional<Course> course = courseService.getCourseById(courseId);
             if (course.isPresent()) {
-                // courseNameField.setText(course.get().getTitle());
                 double averageRating = reviewService.getAverageRatingForCourse(courseId);
-                // averageRatingField.setText(String.format("%.2f", averageRating));
                 courseNameLabel.setText(course.get().getMnemonic() + " " + course.get().getNumber() + ": " + course.get().getTitle());
                 courseAverageLabel.setText(String.format("Course Average: %.2f", averageRating));
             }
-            else {
-                courseNameField.setText("Course not found");
-                averageRatingField.setText("N/A");
-            }
+
+            boolean hasUserReview = reviews.stream()
+                    .anyMatch(review -> review.getUserId() == userService.getCurrentUser().getId());
+
+            // Add Review Button is always visible
+            addReviewButton.setVisible(true);
+            addReviewButton.setManaged(true);
+
+            // Edit and Delete Review Button is only visible when User has a review
+            editReviewButton.setVisible(hasUserReview);
+            editReviewButton.setManaged(hasUserReview);
+            deleteReviewButton.setVisible(hasUserReview);
+            deleteReviewButton.setManaged(hasUserReview);
         } catch (Exception e) {
             showError("Failed to load reviews. Please try again.");
         }
     }
 
-    private void addActionButtonToTable() {
-        actionColumn.setCellFactory(col -> new TableCell<>() {
-            private final Button editButton = new Button("Edit");
-
-            {
-                editButton.setOnAction(event -> {
-                    Review review = getTableView().getItems().get(getIndex());
-                    handleEditReview(review);
-                });
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty) {
-                    setGraphic(null);
-                    return;
-                }
-
-                Review review = getTableView().getItems().get(getIndex());
-
-                if (review.getUserId() == userService.getCurrentUser().getId()) {
-                    setGraphic(editButton);
-                } else {
-                    setGraphic(null);
-                }
-            }
-        });
-    }
-
-    private void handleEditReview(Review review) {
-        if (review.getUserId() == userService.getCurrentUser().getId()) {
-            ratingField.setText(String.valueOf(review.getRating()));
-            commentTextArea.setText(review.getComment());
-        } else {
-            showError("You can only edit your own review.");
-        }
-    }
-
     @FXML
     private void handleAddReview() {
-        String comment = commentTextArea.getText().trim();
-        String ratingInput = ratingField.getText().trim();
+        Optional<Review> userReview = reviewService.getReviewsForCourse(courseId).stream()
+                .filter(review -> review.getUserId() == userService.getCurrentUser().getId())
+                .findFirst();
 
-        if (ratingInput.isEmpty()) {
-            showError("A rating is required.");
-            return;
-        }
-
-        try {
-            int rating = Integer.parseInt(ratingInput);
-            Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
-            Review newReview = new Review(courseId, userService.getCurrentUser().getId(), rating, comment, currentTimestamp);
-
-            Optional<String> result = reviewService.createReview(newReview);
-
-            if (result.isPresent()) {
-                showError(result.get());
-            } else {
-                showSuccess("Review added successfully!");
-                commentTextArea.clear();
-                ratingField.clear();
-                loadReviews();
-            }
-        } catch (NumberFormatException e) {
-            showError("Rating must be a valid integer number.");
-        } catch (Exception e) {
-            showError("An error occurred while adding the review.");
+        if (userReview.isPresent()) {
+            showError("You already have a review for this course. You can only edit your review instead.");
+        } else {
+            isUpdating = false;
+            toggleReviewBox(true, "Submit Review");
+            commentTextArea.clear();
+            ratingField.clear();
         }
     }
 
     @FXML
-    private void handleUpdateReview() {
-        String comment = commentTextArea.getText().trim();
-        String ratingInput = ratingField.getText().trim();
+    private void handleEditReview() {
+        Optional<Review> userReview = reviewService.getReviewsForCourse(courseId).stream()
+                .filter(review -> review.getUserId() == userService.getCurrentUser().getId())
+                .findFirst();
 
-        if (ratingInput.isEmpty()) {
-            showError("A rating is required.");
-            return;
-        }
-
-        try {
-            int rating = Integer.parseInt(ratingInput);
-
-            Optional<Review> userReview = reviewService.getReviewsForCourse(courseId).stream()
-                    .filter(review -> review.getUserId() == userService.getCurrentUser().getId())
-                    .findFirst();
-
-            if (userReview.isPresent()) {
-                Review updatedReview = userReview.get();
-                updatedReview.setRating(rating);
-                updatedReview.setComment(comment);
-                updatedReview.setTimestamp(new Timestamp(System.currentTimeMillis()));
-
-                Optional<String> result = reviewService.updateReview(updatedReview);
-
-                if (result.isPresent()) {
-                    showError(result.get());
-                } else {
-                    showSuccess("Review updated successfully!");
-                    loadReviews();
-                }
-            } else {
-                showError("No review found to update.");
-            }
-        } catch (NumberFormatException e) {
-            showError("Rating must be a valid integer number.");
-        } catch (Exception e) {
-            showError("An error occurred while updating the review.");
+        if (userReview.isPresent()) {
+            isUpdating = true;
+            Review review = userReview.get();
+            ratingField.setText(String.valueOf(review.getRating()));
+            commentTextArea.setText(review.getComment());
+            toggleReviewBox(true, "Update Review");
+        } else {
+            showError("No review found to edit.");
         }
     }
 
@@ -285,6 +233,67 @@ public class CourseReviewsController {
                 showError("An error occurred while deleting the review.");
             }
         }
+    }
+
+    //Combined update and add Review into one function
+    @FXML
+    private void handleSubmitReview() {
+        String comment = commentTextArea.getText().trim();
+        String ratingInput = ratingField.getText().trim();
+
+        if (ratingInput.isEmpty()) {
+            showError("A rating is required.");
+            return;
+        }
+
+        try {
+            int rating = Integer.parseInt(ratingInput);
+            Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+
+            if (isUpdating) {
+                Optional<Review> userReview = reviewService.getReviewsForCourse(courseId).stream()
+                        .filter(review -> review.getUserId() == userService.getCurrentUser().getId())
+                        .findFirst();
+
+                if (userReview.isPresent()) {
+                    Review updatedReview = userReview.get();
+                    updatedReview.setRating(rating);
+                    updatedReview.setComment(comment);
+                    updatedReview.setTimestamp(currentTimestamp);
+                    reviewService.updateReview(updatedReview);
+                    showSuccess("Review updated successfully!");
+                } else {
+                    showError("No review found to update.");
+                }
+            } else {
+                Review newReview = new Review(courseId, userService.getCurrentUser().getId(), rating, comment, currentTimestamp);
+                reviewService.createReview(newReview);
+                showSuccess("Review added successfully!");
+            }
+
+            // Once the user successfully adds the review, disable the Review Box
+            toggleReviewBox(false, "");
+            loadReviews();
+        } catch (NumberFormatException e) {
+            showError("Rating must be a valid integer number.");
+        } catch (Exception e) {
+            showError("An error occurred while updating the review.");
+        }
+    }
+
+    @FXML
+    private void handleCancelReview() {
+        toggleReviewBox(false, "");
+        commentTextArea.clear();
+        ratingField.clear();
+        isUpdating = false;
+    }
+
+    // pass "" in buttonText clears the textFields
+    private void toggleReviewBox(boolean visible, String buttonText) {
+        reviewBox.setVisible(visible);
+        reviewBox.setManaged(visible);
+        submitReviewButton.setText(buttonText);
     }
 
     private void showError(String message) {
