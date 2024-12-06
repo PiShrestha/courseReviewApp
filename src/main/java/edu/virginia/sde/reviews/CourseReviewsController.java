@@ -94,8 +94,7 @@ public class CourseReviewsController {
                 double averageRating = reviewService.getAverageRatingForCourse(courseId);
                 // averageRatingField.setText(String.format("%.2f", averageRating));
                 courseNameLabel.setText("Course name: " + course.get().getTitle());
-                courseAverageLabel.setText("Course Average: " + averageRating);
-
+                courseAverageLabel.setText(String.format("Course Average: %.2f", averageRating));
             }
             else {
                 courseNameField.setText("Course not found");
