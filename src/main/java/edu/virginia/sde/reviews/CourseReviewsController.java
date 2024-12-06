@@ -205,7 +205,7 @@ public class CourseReviewsController {
                 loadReviews();
             }
         } catch (NumberFormatException e) {
-            showError("Rating must be a valid number.");
+            showError("Rating must be a valid integer number.");
         } catch (Exception e) {
             showError("An error occurred while adding the review.");
         }
@@ -246,7 +246,7 @@ public class CourseReviewsController {
                 showError("No review found to update.");
             }
         } catch (NumberFormatException e) {
-            showError("Rating must be a valid number.");
+            showError("Rating must be a valid integer number.");
         } catch (Exception e) {
             showError("An error occurred while updating the review.");
         }
