@@ -19,7 +19,7 @@
             <Label text="Course Search" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
 
             <HBox spacing="10" alignment="CENTER">
-                <TextField fx:id="searchField" promptText="Search by subject, number, or title" prefWidth="400" />
+                <TextField fx:id="searchField" promptText="Search by subject, number, and/or title" prefWidth="400" />
                 <Button text="Search" onAction="#handleSearch" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" />
             </HBox>
 
