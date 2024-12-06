@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -105,23 +106,14 @@ public class CourseReviewsController {
             }
         });
 
-        // New column so the user can know which one is their comment
-        currentUser.setCellFactory(col -> new TableCell<>() {
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    Review review = getTableView().getItems().get(getIndex());
-                    if (review.getUserId() == userService.getCurrentUser().getId()) {
-                        setGraphic(new Label("*"));
-                    } else {
-                        setGraphic(null);
-                    }
-                }
-            }
+        commentColumn.setCellFactory(column -> {
+            var cell = new TableCell<Review, String>();
+            Text text = new Text();
+            cell.setGraphic(text);
+            cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
+            text.wrappingWidthProperty().bind(commentColumn.widthProperty());
+            text.textProperty().bind(cell.itemProperty());
+            return cell;
         });
 
         reviewsTable.setFocusTraversable(false);
