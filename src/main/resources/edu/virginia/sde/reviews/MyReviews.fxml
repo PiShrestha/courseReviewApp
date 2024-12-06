@@ -13,7 +13,7 @@
                     <TableColumn fx:id="ratingColumn" text="Rating" />
                     <TableColumn fx:id="commentColumn" text="Comment" prefWidth="500"/>
                     <TableColumn fx:id="timestampColumn" text="Timestamp"/>
-                    <TableColumn fx:id="deleteColumn" text="Action" />
+                    <TableColumn fx:id="deleteColumn" text="Action" prefWidth="100"/>
                 </columns>
             <columnResizePolicy>
                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -22,7 +22,7 @@
 
             <HBox alignment="BOTTOM_RIGHT">
                 <Button text="Back to Course Search" onAction="#navigateToCourseSearch"
-                        style="-fx-background-color: #f44336; -fx-text-fill: white;" />
+                        style="-fx-background-color: #f44638; -fx-text-fill: white;" />
             </HBox>
         </VBox>
     </children>

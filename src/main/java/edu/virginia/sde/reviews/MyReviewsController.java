@@ -96,6 +96,10 @@ public class MyReviewsController {
         deleteColumn.setCellFactory(param -> new TableCell<>() {
             private final Button deleteButton = new Button("Delete");
 
+            {
+                deleteButton.setStyle("-fx-background-color: #dd473c; -fx-text-fill: white;");
+            }
+
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
@@ -112,6 +116,7 @@ public class MyReviewsController {
                 setGraphic(deleteButton);
             }
         });
+        deleteColumn.setStyle("-fx-alignment: CENTER;");
 
         reviewsTable.setPlaceholder(new Label("You have no Reviews available."));
         reviewsTable.setFocusTraversable(false);
@@ -221,7 +226,15 @@ public class MyReviewsController {
 
     private String getCourseNameById(int courseId) {
         Optional<Course> course = courseService.getCourseById(courseId);
-        return course.map(Course::getTitle).orElse("Unknown Course");
+        if (course.isPresent()) {
+            Course c = course.get();
+            String mnemonic = c.getMnemonic();
+            String number = c.getNumber();
+            String title = c.getTitle();
+            return mnemonic + " " + number + ": " + title;
+        } else {
+            return "Unknown Course";
+        }
     }
 
 }
