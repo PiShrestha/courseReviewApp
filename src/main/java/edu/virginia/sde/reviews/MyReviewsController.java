@@ -2,6 +2,7 @@ package edu.virginia.sde.reviews;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +13,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,8 +63,20 @@ public class MyReviewsController {
         });
         ratingColumn.setCellValueFactory(data -> new ReadOnlyObjectWrapper<>(data.getValue().getRating()));
         commentColumn.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getComment()));
-        timestampColumn.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getTimestamp().toString()));
+        // Referenced for DateTimeFormatter.ofPattern usage:
+        // https://stackoverflow.com/questions/35156809/parsing-a-date-using-datetimeformatter-ofpattern
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy, h:mm a");
 
+        timestampColumn.setCellValueFactory(data -> {
+            Timestamp timestamp = data.getValue().getTimestamp();
+            if (timestamp != null) {
+                LocalDateTime dateTime = timestamp.toLocalDateTime();
+                String formattedTimestamp = dateTime.format(formatter);
+                return new SimpleObjectProperty<>(formattedTimestamp);
+            } else {
+                return new SimpleObjectProperty<>("");
+            }
+        });
         commentColumn.setCellFactory(param -> new TableCell<>() {
 
             @Override

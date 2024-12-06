@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,7 +32,7 @@ public class CourseReviewsController {
     private TableColumn<Review, String> commentColumn;
 
     @FXML
-    private TableColumn<Review, Timestamp> timestampColumn;
+    private TableColumn<Review, String> timestampColumn;
 
     @FXML
     private TextArea commentTextArea;
@@ -77,8 +79,20 @@ public class CourseReviewsController {
     private void initialize() {
         ratingColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getRating()));
         commentColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getComment()));
-        timestampColumn.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getTimestamp()));
+        // Referenced for DateTimeFormatter.ofPattern usage:
+        // https://stackoverflow.com/questions/35156809/parsing-a-date-using-datetimeformatter-ofpattern
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy, h:mm a");
 
+        timestampColumn.setCellValueFactory(data -> {
+            Timestamp timestamp = data.getValue().getTimestamp();
+            if (timestamp != null) {
+                LocalDateTime dateTime = timestamp.toLocalDateTime();
+                String formattedTimestamp = dateTime.format(formatter);
+                return new SimpleObjectProperty<>(formattedTimestamp);
+            } else {
+                return new SimpleObjectProperty<>("");
+            }
+        });
         commentColumn.setCellFactory(param -> new TableCell<>() {
 
             @Override
@@ -239,16 +253,21 @@ public class CourseReviewsController {
     private void handleDeleteReview() {
         Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmAlert.setTitle("Delete Review");
-        confirmAlert.setHeaderText(null);
-        confirmAlert.setContentText("Are you sure you want to delete your review?");
+        confirmAlert.setHeaderText("Are you sure you want to delete your review?");
+        confirmAlert.setContentText("This action cannot be undone.");
 
         Optional<ButtonType> result = confirmAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                // Delete the review
                 Optional<Review> userReview = reviewService.getReviewsForCourse(courseId).stream()
                         .filter(review -> review.getUserId() == userService.getCurrentUser().getId())
                         .findFirst();
+
+                if (userReview.isEmpty()) {
+                    showError("No review found to delete.");
+                    return;
+                }
+
                 Optional<String> deleteResult = reviewService.deleteReview(userReview.get().getId());
                 if (deleteResult.isPresent()) {
                     showError(deleteResult.get());
