@@ -20,8 +20,6 @@ Ensure the login screen is displayed upon running the application.
 
 ## Contributions
 
-List the primary contributions of each author. It is recommended to update this with your contributions after each coding session.:
-
 ### Pratik Shrestha
 
 * Created Review, User, and Course models.
